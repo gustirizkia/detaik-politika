@@ -53,7 +53,7 @@ export default function Home() {
           property="og:description"
           content="detakpolitik.com - Kabar terbaru hari ini Indonesia dan Dunia, Kabar terkini news, peristiwa, ekonomi, hukum"
         />
-        <meta property="og:type" content="article" />
+        <meta property="og:type" content="website" />
         <meta property="og:image:width" content="300" />
         <meta property="og:image:height" content="300" />
       </Head>
