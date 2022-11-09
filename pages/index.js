@@ -104,10 +104,11 @@ export default function Home() {
                   </div>
                   <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
                 </div>
-                {Populer.map((item) => {
+                {Populer.map((item, index) => {
                   return (
                     <Berita
                       title={item.title}
+                      key={index}
                       created_at="22-09-2022"
                       kategori="Politik"
                       linkBerita="/"
@@ -124,9 +125,10 @@ export default function Home() {
                   </div>
                   <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
                 </div>
-                {Populer.map((item) => {
+                {Populer.map((item, index) => {
                   return (
                     <Terbaru
+                      key={index}
                       title={item.title}
                       created_at="22-09-2022"
                       kategori="Politik"
