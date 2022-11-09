@@ -37,7 +37,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Detak Politika</title>
+        <title>Detak Politika | Nasional</title>
         <link rel="icon" href="/logo.png" />
         <meta
           name="keywords"
