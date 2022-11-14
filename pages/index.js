@@ -11,15 +11,20 @@ import Terbaru from "../components/Home/Terbaru";
 import Footer from "../components/Home/Footer";
 import Navmobile from "../components/Navmobile";
 import Logo from "../public/logo.png";
+import { APIURL, JwtToken } from "../components/api/base_url";
 
 export default function Home() {
   const [BeritaTerbaru, setBeritaTerbaru] = useState([]);
   const [Populer, setPopuler] = useState([]);
+  const [BeritaUtama, setBeritaUtama] = useState([]);
+  const [limitBerita, setLimitBerita] = useState(1);
+  const [loadSkeleton, setLoadSkeleton] = useState(true);
 
   useEffect(() => {
     hendleFetchTerbaru();
     hendleFetchPopuler();
-  }, []);
+    handleBeritaUtama();
+  }, [limitBerita]);
 
   const hendleFetchPopuler = () => {
     axios
@@ -31,6 +36,69 @@ export default function Home() {
   const hendleFetchTerbaru = () => {
     axios.get("https://berita-indo-api.vercel.app/v1/cnn-news").then((res) => {
       setBeritaTerbaru(res.data.data);
+    });
+  };
+
+  const handleBeritaUtama = () => {
+    axios
+      .get(APIURL + "artikel?page=" + limitBerita, {
+        headers: {
+          "Jwt-Key": JwtToken,
+        },
+      })
+      .then((ress) => {
+        // console.log(ress.data.data.data);
+        setBeritaUtama(ress.data.data.data);
+        setLoadSkeleton(false);
+      })
+      .catch((err) => {
+        setLoadSkeleton(false);
+      });
+  };
+
+  const handleLoadMore = () => {
+    setLoadSkeleton(true);
+
+    let addLimit = limitBerita + 1;
+    axios
+      .get(APIURL + "artikel?page=" + addLimit, {
+        headers: {
+          "Jwt-Key": JwtToken,
+        },
+      })
+      .then((ress) => {
+        console.log(ress.data.data.data);
+        ress.data.data.data.forEach((element) => {
+          setBeritaUtama((BeritaUtama) => [...BeritaUtama, element]);
+        });
+
+        setLoadSkeleton(false);
+        // setBeritaUtama(ress.data.data.data);
+      })
+      .catch((err) => {
+        setLoadSkeleton(false);
+      });
+  };
+
+  const tagSkeleton = () => {
+    return Array.from(Array(8), (element, index) => {
+      return (
+        <div className="  rounded-md p-4  w-full mx-auto" key={index}>
+          <div className="animate-pulse flex space-x-4 items-center">
+            <div className="rounded-xl bg-slate-700 h-44 w-44"></div>
+            <div className="flex-1 space-y-6 py-1">
+              <div className="h-4 bg-slate-700 rounded"></div>
+              <div className="space-y-3">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="h-4 bg-slate-700 rounded col-span-2"></div>
+                  <div className="h-4 bg-slate-700 rounded col-span-1"></div>
+                </div>
+                <div className="h-4 bg-slate-700 rounded w-1/2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
     });
   };
 
@@ -57,11 +125,12 @@ export default function Home() {
         <meta property="og:image:width" content="300" />
         <meta property="og:image:height" content="300" />
       </Head>
-      <div className="px-4 md:px-32 font-popins">
-        <div className="md:block hidden">
+      <div className="md:block hidden sticky bg-white  z-20 top-0 ">
+        <div className="md:px-32 font-popins">
           <Navbar />
         </div>
-
+      </div>
+      <div className="px-4 md:px-32 font-popins relative">
         <div className="md:hidden">
           <Navmobile />
         </div>
@@ -104,19 +173,30 @@ export default function Home() {
                   </div>
                   <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
                 </div>
-                {Populer.map((item, index) => {
+                {BeritaUtama.map((item, index) => {
                   return (
-                    <Berita
-                      title={item.title}
-                      key={index}
-                      created_at="22-09-2022"
-                      kategori="Politik"
-                      linkBerita="/"
-                      image_url={item.image}
-                      gap="10"
-                    />
+                    <div className="" key={index}>
+                      <Berita
+                        title={item.judul}
+                        created_at={item.tanggal_dipublish}
+                        kategori={item.kategori.nama}
+                        linkBerita={"/berita/" + item.slug}
+                        image_url="https://via.placeholder.com/640x480.png"
+                        gap="10"
+                      />
+                    </div>
                   );
                 })}
+                {!loadSkeleton || tagSkeleton()}
+
+                <div className="flex">
+                  <div
+                    className="text-center cursor-pointer text-pink-500 border-2 border-pink-500 rounded-full px-4 py-2 inline-block mx-auto"
+                    onClick={handleLoadMore}
+                  >
+                    Load more
+                  </div>
+                </div>
               </div>
               <div className="col-span-12 md:col-span-4">
                 <div className="mb-8">
@@ -127,15 +207,16 @@ export default function Home() {
                 </div>
                 {Populer.map((item, index) => {
                   return (
-                    <Terbaru
-                      key={index}
-                      title={item.title}
-                      created_at="22-09-2022"
-                      kategori="Politik"
-                      linkBerita="/"
-                      image_url={item.image}
-                      gap={4}
-                    />
+                    <div className="" key={index}>
+                      <Terbaru
+                        title={item.title}
+                        created_at="22-09-2022"
+                        kategori="Politik"
+                        linkBerita="/"
+                        image_url="https://via.placeholder.com/640x480.png"
+                        gap={4}
+                      />
+                    </div>
                   );
                 })}
               </div>

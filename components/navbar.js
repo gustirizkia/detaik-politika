@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../public/logo.png";
+import axios from "axios";
+import { APIURL, JwtToken } from "./api/base_url";
 
 export default function Navbar() {
+  const [tempData, setTempData] = useState([]);
+
+  useEffect(() => {
+    handleFetchData();
+  }, []);
+
+  const handleFetchData = () => {
+    axios
+      .get(APIURL + "kategori", {
+        headers: {
+          "Jwt-Key": JwtToken,
+        },
+      })
+      .then((ress) => {
+        setTempData(ress.data.data);
+        console.log(ress.data.data);
+      })
+      .catch((err) => {
+        console.log("Server Error", err);
+      });
+  };
+
   return (
-    <div className="nav">
+    <div className="nav w-full border-b">
       <div className="flex md:justify-between items-center">
         <div
           className="w-52 
@@ -13,22 +37,36 @@ export default function Navbar() {
         >
           <Image src={logo} layout="responsive" alt="Detakpolitika.com" />
         </div>
-        <div className="item flex justify-end">
+        <div className="item flex justify-end ">
           <div className="md:ml-8 ml-3 font-bold font-popins hover:text-pink-500">
-            <Link href="">Home</Link>
+            <Link href="/">Home</Link>
           </div>
-          <div className="md:ml-8 ml-3 font-bold font-popins hover:text-pink-500">
-            <Link href="">Politik</Link>
-          </div>
-          <div className="md:ml-8 ml-3 font-bold font-popins hover:text-pink-500">
-            <Link href="">Ekonomi</Link>
-          </div>
-          <div className="md:ml-8 ml-3 font-bold font-popins hover:text-pink-500">
-            <Link href="">Hukum</Link>
-          </div>
-          <div className="md:ml-8 ml-3 font-bold font-popins hover:text-pink-500">
-            <Link href="">Parlemen</Link>
-          </div>
+          {tempData.map((item, index) => {
+            return (
+              <div key={index}>
+                {item.sub_judul === null ? (
+                  <div className="md:ml-8 group ml-3 font-bold font-popins hover:text-pink-500 relative">
+                    <Link href="">{item.nama}</Link>
+                    {item.sub.length < 1 || (
+                      <div className="hidden group-hover:block absolute font-medium bg-pink-500 pb-4 rounded-b-lg  left-1/2 transform -translate-x-1/2 p-4">
+                        {item.sub.map((item, index) => {
+                          return (
+                            <div key={index}>
+                              <div className="  cursor-pointer hover:text-pink-200 mb-1 text-white underline">
+                                {item.nama}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
+            );
+          })}
         </div>
         <div className=" items-center border-2 rounded-full px-1 focus-within:border-pink-500  overflow-x-hidden  py-1 w-52 border-gray-400 md:flex hidden">
           <div className="">

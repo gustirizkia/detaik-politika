@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["img.antaranews.com", "akcdn.detik.net.id"],
+    domains: [
+      "img.antaranews.com",
+      "akcdn.detik.net.id",
+      "via.placeholder.com",
+    ],
   },
 };
 
