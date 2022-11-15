@@ -6,6 +6,7 @@ const nextConfig = {
       "img.antaranews.com",
       "akcdn.detik.net.id",
       "via.placeholder.com",
+      "admin.kuakmedia.co",
     ],
   },
 };

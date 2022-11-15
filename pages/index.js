@@ -19,9 +19,26 @@ export default function Home() {
   const [BeritaUtama, setBeritaUtama] = useState([]);
   const [limitBerita, setLimitBerita] = useState(1);
   const [loadSkeleton, setLoadSkeleton] = useState(true);
+  const [heightArtikel, setHeightArtikel] = useState(566);
+  const [SkeletonBeritaTerbaru, setSkeletonBeritaTerbaru] = useState(true);
 
   useEffect(() => {
-    hendleFetchTerbaru();
+    window.addEventListener("scroll", handleScroll, false);
+  });
+
+  const handleScroll = () => {
+    const position = window.pageYOffset;
+
+    if (position >= 1632 && heightArtikel === 566) {
+    }
+  };
+
+  const handleCek = () => {
+    setHeightArtikel(heightArtikel * 2);
+  };
+
+  useEffect(() => {
+    handleBeritaTerbaru();
     hendleFetchPopuler();
     handleBeritaUtama();
   }, [limitBerita]);
@@ -32,11 +49,6 @@ export default function Home() {
       .then((res) => {
         setPopuler(res.data.data);
       });
-  };
-  const hendleFetchTerbaru = () => {
-    axios.get("https://berita-indo-api.vercel.app/v1/cnn-news").then((res) => {
-      setBeritaTerbaru(res.data.data);
-    });
   };
 
   const handleBeritaUtama = () => {
@@ -56,6 +68,22 @@ export default function Home() {
       });
   };
 
+  const handleBeritaTerbaru = () => {
+    axios
+      .get(APIURL + "artikel/terbaru?", {
+        headers: {
+          "Jwt-Key": JwtToken,
+        },
+      })
+      .then((ress) => {
+        setBeritaTerbaru(ress.data.data.data);
+        setSkeletonBeritaTerbaru(false);
+      })
+      .catch((err) => {
+        setSkeletonBeritaTerbaru(false);
+      });
+  };
+
   const handleLoadMore = () => {
     setLoadSkeleton(true);
 
@@ -71,6 +99,8 @@ export default function Home() {
         ress.data.data.data.forEach((element) => {
           setBeritaUtama((BeritaUtama) => [...BeritaUtama, element]);
         });
+
+        setHeightArtikel(heightArtikel * 2);
 
         setLoadSkeleton(false);
         // setBeritaUtama(ress.data.data.data);
@@ -125,7 +155,7 @@ export default function Home() {
         <meta property="og:image:width" content="300" />
         <meta property="og:image:height" content="300" />
       </Head>
-      <div className="md:block hidden sticky bg-white  z-20 top-0 ">
+      <div className="md:block hidden sticky bg-white  z-20 top-0 border-b">
         <div className="md:px-32 font-popins">
           <Navbar />
         </div>
@@ -205,20 +235,22 @@ export default function Home() {
                   </div>
                   <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
                 </div>
-                {Populer.map((item, index) => {
+                {BeritaTerbaru.map((item, index) => {
                   return (
                     <div className="" key={index}>
                       <Terbaru
-                        title={item.title}
-                        created_at="22-09-2022"
-                        kategori="Politik"
-                        linkBerita="/"
+                        title={item.judul}
+                        created_at={item.tanggal_dipublish}
+                        kategori={item.kategori.nama}
+                        linkBerita={"/berita/" + item.slug}
                         image_url="https://via.placeholder.com/640x480.png"
                         gap={4}
                       />
                     </div>
                   );
                 })}
+
+                {!SkeletonBeritaTerbaru || tagSkeleton()}
               </div>
             </div>
           </div>

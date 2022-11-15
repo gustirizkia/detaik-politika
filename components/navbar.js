@@ -4,9 +4,13 @@ import Link from "next/link";
 import logo from "../public/logo.png";
 import axios from "axios";
 import { APIURL, JwtToken } from "./api/base_url";
+import { useRouter } from "next/router";
 
 export default function Navbar() {
+  const route = useRouter();
+
   const [tempData, setTempData] = useState([]);
+  const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
     handleFetchData();
@@ -28,14 +32,29 @@ export default function Navbar() {
       });
   };
 
+  const handleSearch = () => {
+    axios
+      .get(APIURL + "artikel?keyword=" + keyword, {
+        headers: {
+          "Jwt-Key": JwtToken,
+        },
+      })
+      .then((ress) => {
+        console.log("response success", ress);
+        route.push(`/search/${keyword}`);
+      });
+  };
+
   return (
-    <div className="nav w-full border-b">
+    <div className="nav w-full">
       <div className="flex md:justify-between items-center">
         <div
           className="w-52 
           "
         >
-          <Image src={logo} layout="responsive" alt="Detakpolitika.com" />
+          <Link href="/">
+            <Image src={logo} layout="responsive" alt="Detakpolitika.com" />
+          </Link>
         </div>
         <div className="item flex justify-end ">
           <div className="md:ml-8 ml-3 font-bold font-popins hover:text-pink-500">
@@ -90,6 +109,15 @@ export default function Navbar() {
             type="text"
             className="w-full focus:outline-none focus:ring-0 "
             placeholder="Cari berita . . ."
+            onChange={(e) => {
+              setKeyword(e.target.value);
+              console.log(e.target.value);
+            }}
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                handleSearch();
+              }
+            }}
           />
         </div>
       </div>
