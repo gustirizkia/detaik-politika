@@ -65,7 +65,7 @@ export default function Navbar() {
               <div key={index}>
                 {item.sub_judul === null ? (
                   <div className="md:ml-8 group ml-3 font-bold font-popins hover:text-pink-500 relative">
-                    <Link href="">{item.nama}</Link>
+                    <Link href={`/kategori?q=${item.nama}`}>{item.nama}</Link>
                     {item.sub.length < 1 || (
                       <div className="hidden group-hover:block absolute font-medium bg-pink-500 pb-4 rounded-b-lg  left-1/2 transform -translate-x-1/2 p-4">
                         {item.sub.map((item, index) => {
