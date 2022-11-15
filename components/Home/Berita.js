@@ -14,7 +14,7 @@ export default function Berita({
   return (
     <>
       {/* Berita utama */}
-      <Link href={linkBerita}>
+      <Link href={linkBerita} className="group">
         <div
           className={`md:grid grid-flow-row grid-cols-12 mb-8 gap-4 md:gap-10`}
         >
@@ -33,7 +33,9 @@ export default function Berita({
           </div>
           <div className="col-span-7 my-auto">
             <div className="text-gray-400 text-sm mb-2">{created_at}</div>
-            <div className="text-gray-800 font-semibold text-xl ">{title}</div>
+            <div className="text-gray-800 font-semibold text-xl group-hover:text-pink-500 ">
+              {title}
+            </div>
             <div className="text-pink-500 text-sm mt-2 font-medium">
               {kategori}
             </div>

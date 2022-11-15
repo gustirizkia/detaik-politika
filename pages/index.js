@@ -208,7 +208,7 @@ export default function Home() {
                     <div className="" key={index}>
                       <Berita
                         title={item.judul}
-                        created_at={item.tanggal_dipublish}
+                        created_at={item.tanggal}
                         kategori={item.kategori.nama}
                         linkBerita={"/berita/" + item.slug}
                         image_url="https://via.placeholder.com/640x480.png"

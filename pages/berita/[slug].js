@@ -9,6 +9,9 @@ import Terbaru from "../../components/Home/Terbaru";
 import Wa from "../../public/images/logos_whatsapp-icon.png";
 import Tw from "../../public/images/logos_twitter.png";
 import Fb from "../../public/images/logos_facebook.png";
+import Link from "next/link";
+import Footer from "../../components/Home/Footer";
+import Head from "next/head";
 
 export async function getServerSideProps({ params: { slug } }) {
   let data;
@@ -49,6 +52,10 @@ export async function getServerSideProps({ params: { slug } }) {
 export default function DetailArtikel({ single, dataReady }) {
   const [SkeletonBeritaTerbaru, setSkeletonBeritaTerbaru] = useState(true);
   const [BeritaTerbaru, setBeritaTerbaru] = useState([]);
+  const [beritaRekomendasi, setBeritaRekomendasi] = useState([]);
+  const [hostUrl, setHostUrl] = useState("");
+
+  const router = useRouter();
 
   const handleBeritaTerbaru = () => {
     axios
@@ -68,7 +75,27 @@ export default function DetailArtikel({ single, dataReady }) {
 
   useEffect(() => {
     handleBeritaTerbaru();
+    fetchRekomendasi();
   }, []);
+
+  useEffect(() => {
+    setHostUrl(window.location.host);
+  }, []);
+
+  const fetchRekomendasi = () => {
+    axios
+      .get(APIURL + "artikel/rekomendasi", {
+        headers: {
+          "Jwt-Key": JwtToken,
+        },
+      })
+      .then((ress) => {
+        setBeritaRekomendasi(ress.data.data);
+      })
+      .catch((err) => {
+        console.log("Server rekomendasi error");
+      });
+  };
 
   const tagSkeleton = () => {
     return Array.from(Array(8), (element, index) => {
@@ -98,14 +125,18 @@ export default function DetailArtikel({ single, dataReady }) {
         <div className="mt-4 mb-6 flex items-center">
           <div className="font-bold text-gray-800 mr-4">Bagikan :</div>
           <div className="flex items-center">
-            <div className="mr-3">
-              <Image src={Wa} width={24} height={30} />
+            <div className="mx-4">
+              <Link
+                href={`whatsapp://send?text=https://${hostUrl}/${single.slug}`}
+              >
+                <Image alt="Detakpolitika " src={Wa} width={24} height={30} />
+              </Link>
             </div>
-            <div className="mr-3">
-              <Image src={Tw} width={24} height={30} />
+            <div className="mx-4">
+              <Image alt="Detakpolitika " src={Tw} width={24} height={30} />
             </div>
-            <div className="mr-3">
-              <Image src={Fb} width={24} height={30} />
+            <div className="mx-4">
+              <Image alt="Detakpolitika " src={Fb} width={24} height={30} />
             </div>
           </div>
         </div>
@@ -115,6 +146,23 @@ export default function DetailArtikel({ single, dataReady }) {
 
   return (
     <>
+      <Head>
+        <title>{single.judul}</title>
+        <link rel="icon" href="/logo.png" />
+        <meta
+          property="og:site_name"
+          content={`Detakpolitika | ${single.judul}`}
+        ></meta>
+
+        <meta property="og:type" content="article"></meta>
+        <meta property="og:title" content={single.judul}></meta>
+        <meta property="og:url" content={`${hostUrl}/${single.slug}`}></meta>
+        <meta
+          property="og:description"
+          content={`Deskripsi Artikel Detakpolitika | ${single.judul}`}
+        ></meta>
+        <meta property="og:image" content={single.image}></meta>
+      </Head>
       <div className="md:block hidden sticky bg-white  z-20 top-0 border-b">
         <div className="md:px-32 font-popins">
           <Navbar />
@@ -183,6 +231,28 @@ export default function DetailArtikel({ single, dataReady }) {
             </div>
 
             <div className="mt-20">{tagBagikan()}</div>
+            <div className="bg-gray-200 border w-full rounded-full"></div>
+            <div className="mt-8 flex">
+              <div className="text-2xl font-bold text-gray-800">
+                Topik Rekomendasi
+                <div className=" h-1 mt-2 bg-pink-500 rounded-full block"></div>
+              </div>
+            </div>
+            {/* artikel rekomendasi */}
+            {beritaRekomendasi.map((item, index) => {
+              return (
+                <>
+                  <div className="mt-8" key={index}>
+                    <Link href={`/berita/${item.slug}`}>
+                      <div className="font-bold text-lg text-gray-800 mb-4">
+                        {item.judul}
+                      </div>
+                    </Link>
+                    <div className="bg-gray-200 border w-full rounded-full"></div>
+                  </div>
+                </>
+              );
+            })}
           </div>
 
           <div className="col-span-4">
@@ -205,6 +275,10 @@ export default function DetailArtikel({ single, dataReady }) {
             {!SkeletonBeritaTerbaru || tagSkeleton()}
           </div>
         </div>
+      </div>
+
+      <div className="mt-32">
+        <Footer />
       </div>
     </>
   );
