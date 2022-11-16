@@ -9,15 +9,17 @@ import Navmobile from "../components/Navmobile";
 
 export async function getServerSideProps({ query: q }) {
   let data;
-
+  let parentKategori;
   await axios
-    .get(APIURL + "artikel?kategori_nama=" + q.q, {
+    .get(APIURL + "kategori/detail?nama=" + q.q, {
       headers: {
         "Jwt-Key": JwtToken,
       },
     })
     .then((ress) => {
-      data = ress.data.data.data;
+      data = ress.data.artikel.data;
+      parentKategori = ress.data.parent_kategori.nama;
+      // console.log("datas", data);
     })
     .catch((error) => {
       if (error.response) {
@@ -47,12 +49,17 @@ export async function getServerSideProps({ query: q }) {
     props: {
       datas: data,
       kategori: q.q,
+      parent_kategori: parentKategori,
     },
   };
 }
 
-export default function Kategori({ datas, kategori }) {
+export default function Kategori({ datas, kategori, parent_kategori }) {
   const [BeritaTerbaru, setBeritaTerbaru] = useState([]);
+
+  useEffect(() => {
+    console.log("datas", datas);
+  }, []);
 
   const handleBeritaTerbaru = () => {
     axios
@@ -86,7 +93,8 @@ export default function Kategori({ datas, kategori }) {
         <div className="grid grid-flow-row grid-cols-12 gap-8">
           <div className=" md:col-span-8 col-span-12">
             <div className="font-bold text-xl mb-10">
-              Kategori {">"} {kategori}
+              Kategori {">"} {parent_kategori ? parent_kategori + " | " : ""}{" "}
+              {kategori}
               <hr className="mt-4" />
             </div>
             {datas.map((item, index) => {
@@ -95,7 +103,7 @@ export default function Kategori({ datas, kategori }) {
                   <Berita
                     title={item.judul}
                     created_at={item.tanggal_dipublish}
-                    kategori={item.kategori.nama}
+                    kategori={kategori}
                     linkBerita={"/berita/" + item.slug}
                     image_url="https://via.placeholder.com/640x480.png"
                     gap={4}

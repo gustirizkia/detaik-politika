@@ -76,6 +76,7 @@ export default function DetailArtikel({ single, dataReady }) {
   useEffect(() => {
     handleBeritaTerbaru();
     fetchRekomendasi();
+    console.log(single.image);
   }, []);
 
   useEffect(() => {
@@ -245,7 +246,9 @@ export default function DetailArtikel({ single, dataReady }) {
                   <div className="mt-8" key={index}>
                     <Link href={`/berita/${item.slug}`}>
                       <div className="font-bold text-lg text-gray-800 mb-4">
-                        {item.judul}
+                        {item.judul.length >= 70
+                          ? item.judul.substring(0, 62) + "..."
+                          : item.judul}
                       </div>
                     </Link>
                     <div className="bg-gray-200 border w-full rounded-full"></div>
@@ -261,7 +264,11 @@ export default function DetailArtikel({ single, dataReady }) {
               return (
                 <div className="" key={index}>
                   <Terbaru
-                    title={item.judul}
+                    title={
+                      item.judul.length >= 70
+                        ? item.judul.substring(0, 62) + "..."
+                        : item.judul
+                    }
                     created_at={item.tanggal_dipublish}
                     kategori={item.kategori.nama}
                     linkBerita={"/berita/" + item.slug}

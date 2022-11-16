@@ -7,6 +7,7 @@ const nextConfig = {
       "akcdn.detik.net.id",
       "via.placeholder.com",
       "admin.kuakmedia.co",
+      "detakpolitika.kuakmedia.co",
     ],
   },
 };

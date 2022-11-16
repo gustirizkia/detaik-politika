@@ -71,9 +71,11 @@ export default function Navbar() {
                         {item.sub.map((item, index) => {
                           return (
                             <div key={index}>
-                              <div className="  cursor-pointer hover:text-pink-200 mb-1 text-white underline">
-                                {item.nama}
-                              </div>
+                              <Link href={`/kategori?q=${item.nama}`}>
+                                <div className="  cursor-pointer hover:text-pink-200 mb-1 text-white underline">
+                                  {item.nama}
+                                </div>
+                              </Link>
                             </div>
                           );
                         })}
@@ -111,7 +113,6 @@ export default function Navbar() {
             placeholder="Cari berita . . ."
             onChange={(e) => {
               setKeyword(e.target.value);
-              console.log(e.target.value);
             }}
             onKeyPress={(event) => {
               if (event.key === "Enter") {

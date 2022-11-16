@@ -12,6 +12,8 @@ import Footer from "../components/Home/Footer";
 import Navmobile from "../components/Navmobile";
 import Logo from "../public/logo.png";
 import { APIURL, JwtToken } from "../components/api/base_url";
+import "splide-nextjs/splide/dist/css/themes/splide-default.min.css";
+import { Splide, SplideSlide } from "splide-nextjs/react-splide";
 
 export default function Home() {
   const [BeritaTerbaru, setBeritaTerbaru] = useState([]);
@@ -172,13 +174,45 @@ export default function Home() {
         <div className="mt-10">
           <div className="md:grid grid-flow-row grid-cols-12 gap-10">
             <div className="col-span-12 md:col-span-8 relative rounded-xl overflow-hidden">
-              <Image src={dummy} layout="responsive" alt="Anis Baswedan" />
-              <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full">
-                <div className="text-xl underline">
-                  Deklarasi Relawan Anies Presiden 2024
-                </div>
-                <div className="text-pink-500">Politik</div>
-              </div>
+              <Splide
+                hasTrack={false}
+                options={{
+                  gap: "16px",
+                  pagination: true,
+                  arrows: true,
+                  type: "loop",
+                  // autoWidth: true,
+                  width: "100%",
+                  // autoHeight: true,
+                  // height: 200,
+                  autoplay: true,
+                  pauseOnHover: false,
+                  resetProgress: false,
+                  perPage: 1,
+                  perMove: 1,
+                  interval: 3000,
+                  autoplay: true,
+                }}
+              >
+                {BeritaTerbaru.map((item, index) => {
+                  return (
+                    <SplideSlide key={index}>
+                      <Image
+                        src={dummy}
+                        width="900"
+                        height="900"
+                        alt="Anis Baswedan"
+                      />
+                      <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl">
+                        <div className="text-xl underline">{item.judul}</div>
+                        <div className="text-pink-500">
+                          {item.kategori.nama}
+                        </div>
+                      </div>
+                    </SplideSlide>
+                  );
+                })}
+              </Splide>
             </div>
             <div className="col-span-12 md:col-span-4 mt-8 md:mt-0">
               <div className="text-2xl font-bold text-gray-800">Terpopuler</div>
@@ -206,7 +240,6 @@ export default function Home() {
               })}
             </div>
           </div>
-
           {/* Berita utama */}
           <div className="my-10">
             <div className="md:grid grid-flow-row grid-cols-2 md:grid-cols-12 gap-10">
@@ -253,7 +286,11 @@ export default function Home() {
                   return (
                     <div className="" key={index}>
                       <Terbaru
-                        title={item.judul}
+                        title={
+                          item.judul.length >= 70
+                            ? item.judul.substring(0, 62) + "..."
+                            : item.judul
+                        }
                         created_at={item.tanggal_dipublish}
                         kategori={item.kategori.nama}
                         linkBerita={"/berita/" + item.slug}
@@ -269,11 +306,10 @@ export default function Home() {
             </div>
           </div>
           {/* end Berita utama */}
-
           {/* Gallery dan Video */}
           <div className="mb-8">
             <div className="grid grid-flow-row grid-cols-12 gap-8">
-              <div className="col-span-6">
+              <div className="col-span-12 md:col-span-6">
                 <div className="text-2xl font-bold text-gray-800">Gallery</div>
                 <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
                 <div className="bg-gray-800 p-8 text-white mt-8 rounded-xl">
@@ -285,7 +321,7 @@ export default function Home() {
                         height={600}
                         className="rounded-lg"
                       />
-                      <div className="font-semibold mt-3 underline">
+                      <div className="md:font-semibold font-medium mt-3 underline">
                         Putin Dipastikan Tak Hadir di KTT G20 Bali, Bahlil
                         Ingatkan Jangan Terbuai Ekonomi Tumbuh
                       </div>
@@ -329,7 +365,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="col-span-6">
+              <div className="col-span-12 md:col-span-6">
                 <div className="text-2xl font-bold text-gray-800">Video</div>
                 <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
                 <div className="bg-gray-800 p-8 text-white mt-8 rounded-xl">
@@ -376,7 +412,6 @@ export default function Home() {
             </div>
           </div>
           {/* Gallery dan Video */}
-
           {/* Rekomendasi */}
           <div className="my-10">
             <div className="mb-8">
@@ -420,7 +455,6 @@ export default function Home() {
             </div>
           </div>
           {/* endrekomendasi */}
-
           {/* Berita politik */}
           <div className="my-10">
             <div className="mb-8">
