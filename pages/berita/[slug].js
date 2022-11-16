@@ -182,7 +182,7 @@ export default function DetailArtikel({ single, dataReady }) {
           </span>
         </div>
         <div className="grid grid-flow-row grid-cols-12 gap-8">
-          <div className="col-span-8 relative ">
+          <div className="col-span-12 md:col-span-8 relative ">
             <div className="=">
               <div className=" text-3xl font-semibold text-gray-800">
                 {single.judul}
@@ -255,7 +255,7 @@ export default function DetailArtikel({ single, dataReady }) {
             })}
           </div>
 
-          <div className="col-span-4">
+          <div className=" md:col-span-4 col-span-12">
             <div className="font-bold text-xl mb-4">Terbaru</div>
             {BeritaTerbaru.map((item, index) => {
               return (
