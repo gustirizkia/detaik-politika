@@ -45,9 +45,13 @@ export default function Home() {
 
   const hendleFetchPopuler = () => {
     axios
-      .get("https://berita-indo-api.vercel.app/v1/antara-news/politik")
-      .then((res) => {
-        setPopuler(res.data.data);
+      .get(APIURL + "artikel-paling-banyak-view", {
+        headers: {
+          "Jwt-Key": JwtToken,
+        },
+      })
+      .then((ress) => {
+        setPopuler(ress.data.data);
       });
   };
 
@@ -179,17 +183,27 @@ export default function Home() {
             <div className="col-span-12 md:col-span-4 mt-8 md:mt-0">
               <div className="text-2xl font-bold text-gray-800">Terpopuler</div>
               <div className="w-full h-1 mt-2 bg-pink-500 rounded-full"></div>
-              <div className="mt-4 flex items-center">
-                <div className="text-pink-500 font-bold text-4xl underline italic mr-5 leading-none">
-                  1
-                </div>
-                <div className="my-auto">
-                  <div className="font-semibold leading-none">
-                    Deklarasi Relawan Anies Presiden 2024
+              {Populer.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <Link href={`/berita/${item.slug}`}>
+                      <div className="mt-4 flex justify-start items-center">
+                        <div className="text-pink-500 font-bold text-4xl underline italic mr-5 leading-none">
+                          {index + 1}
+                        </div>
+                        <div className="my-auto">
+                          <div className="font-semibold leading-none">
+                            {item.judul}
+                          </div>
+                          <div className="text-pink-500 text-sm">
+                            {item.kategori.nama}
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
                   </div>
-                  <div className="text-pink-500 text-sm">Politik</div>
-                </div>
-              </div>
+                );
+              })}
             </div>
           </div>
 
@@ -255,6 +269,113 @@ export default function Home() {
             </div>
           </div>
           {/* end Berita utama */}
+
+          {/* Gallery dan Video */}
+          <div className="mb-8">
+            <div className="grid grid-flow-row grid-cols-12 gap-8">
+              <div className="col-span-6">
+                <div className="text-2xl font-bold text-gray-800">Gallery</div>
+                <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
+                <div className="bg-gray-800 p-8 text-white mt-8 rounded-xl">
+                  <div className="grid grid-flow-row grid-cols-12 gap-6">
+                    <div className="col-span-6">
+                      <Image
+                        src={dummy}
+                        width={600}
+                        height={600}
+                        className="rounded-lg"
+                      />
+                      <div className="font-semibold mt-3 underline">
+                        Putin Dipastikan Tak Hadir di KTT G20 Bali, Bahlil
+                        Ingatkan Jangan Terbuai Ekonomi Tumbuh
+                      </div>
+                    </div>
+                    <div className="col-span-6">
+                      <Image
+                        src={dummy}
+                        width={600}
+                        height={600}
+                        className="rounded-lg"
+                      />
+                      <div className="font-semibold mt-3 underline">
+                        Putin Dipastikan Tak Hadir di KTT G20 Bali, Bahlil
+                        Ingatkan Jangan Terbuai Ekonomi Tumbuh
+                      </div>
+                    </div>
+                    <div className="col-span-6">
+                      <Image
+                        src={dummy}
+                        width={600}
+                        height={600}
+                        className="rounded-lg"
+                      />
+                      <div className="font-semibold mt-3 underline">
+                        Putin Dipastikan Tak Hadir di KTT G20 Bali, Bahlil
+                        Ingatkan Jangan Terbuai Ekonomi Tumbuh
+                      </div>
+                    </div>
+                    <div className="col-span-6">
+                      <Image
+                        src={dummy}
+                        width={600}
+                        height={600}
+                        className="rounded-lg"
+                      />
+                      <div className="font-semibold mt-3 underline">
+                        Putin Dipastikan Tak Hadir di KTT G20 Bali, Bahlil
+                        Ingatkan Jangan Terbuai Ekonomi Tumbuh
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-span-6">
+                <div className="text-2xl font-bold text-gray-800">Video</div>
+                <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
+                <div className="bg-gray-800 p-8 text-white mt-8 rounded-xl">
+                  <div className="grid grid-flow-row grid-cols-12 gap-6">
+                    <div className="col-span-6">
+                      <iframe
+                        id="ytplayer"
+                        className="rounded-lg"
+                        type="text/html"
+                        width="100%"
+                        src={`https://www.youtube.com/embed/PG8DIp-MQ3M?autoplay=0&origin=http://example.com&controls=0&rel=1`}
+                        frameborder="0"
+                      ></iframe>
+                    </div>
+
+                    <div className="col-span-6 flex items-center">
+                      <div className="font-semibold">
+                        Anies Baswedan Bicara soal Partai Politik dan Misi yang
+                        Harus Dilaksanakan
+                        <div className="text-pink-500">Politik</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <div className="text-lg font-bold text-white">
+                      Video Terbaru
+                    </div>
+                    <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
+
+                    <div className="mt-3 bg-white p-4 inline-block rounded-lg">
+                      <iframe
+                        id="ytplayer"
+                        className=""
+                        type="text/html"
+                        width="auto"
+                        src={`https://www.youtube.com/embed/PG8DIp-MQ3M?autoplay=0&origin=http://example.com&controls=0&rel=1`}
+                        frameborder="0"
+                      ></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Gallery dan Video */}
 
           {/* Rekomendasi */}
           <div className="my-10">
