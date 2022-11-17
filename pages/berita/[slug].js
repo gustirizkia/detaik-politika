@@ -163,7 +163,7 @@ export default function DetailArtikel({ single, dataReady }) {
         <meta property="og:url" content={`${hostUrl}/${single.slug}`}></meta>
         <meta
           property="og:description"
-          content={`${single.dekripsi_singkat}`}
+          content={`${single.deskripsi_singkat}`}
         ></meta>
         <meta name="keyword" content={single.keyword} />
         <meta property="og:image" content={STORAGEURL + single.image}></meta>
