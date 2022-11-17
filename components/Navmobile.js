@@ -12,6 +12,8 @@ export default function Navmobile() {
   const [showInputSearch, setInputShow] = useState(false);
   const [tempData, setTempData] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const [idActiveDropdown, setIdActiveDrop] = useState(0);
+
   const textInput = useRef(null);
   const route = useRouter();
 
@@ -28,7 +30,7 @@ export default function Navmobile() {
       })
       .then((ress) => {
         setTempData(ress.data.data);
-        console.log(ress.data.data);
+        console.log("Data Kategori", ress.data.data[0].length);
       })
       .catch((err) => {
         console.log("Server Error", err);
@@ -102,7 +104,7 @@ export default function Navmobile() {
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center relative">
         <div
           className="w-52 
           "
@@ -139,32 +141,63 @@ export default function Navmobile() {
           type: "loop",
           autoWidth: true,
         }}
+        className="pb-4 "
       >
         <SplideSlide>
           <div className="inline-block font-bold font-popins hover:text-pink-500">
-            <Link href="">Home</Link>
+            <Link href="/">Home </Link>
           </div>
         </SplideSlide>
-        <SplideSlide>
-          <div className="inline-block font-bold font-popins hover:text-pink-500">
-            <Link href="">Politik</Link>
-          </div>
-        </SplideSlide>
-        <SplideSlide>
-          <div className="inline-block font-bold font-popins hover:text-pink-500">
-            <Link href="">Ekonomi</Link>
-          </div>
-        </SplideSlide>
-        <SplideSlide>
-          <div className="inline-block font-bold font-popins hover:text-pink-500">
-            <Link href="">Hukum</Link>
-          </div>
-        </SplideSlide>
-        <SplideSlide>
-          <div className="inline-block font-bold font-popins hover:text-pink-500">
-            <Link href="">Parlemen</Link>
-          </div>
-        </SplideSlide>
+        {tempData.map((item, index) => {
+          return (
+            <>
+              {item.sub_judul === null ? (
+                <SplideSlide key={item.id}>
+                  <div className="inline-block  font-bold font-popins hover:text-pink-500">
+                    {item.sub.length > 0 ? (
+                      <div className="group relative">
+                        <div
+                          onClick={() => {
+                            if (idActiveDropdown === item.id) {
+                              setIdActiveDrop(0);
+                            } else {
+                              setIdActiveDrop(item.id);
+                            }
+                          }}
+                        >
+                          {item.nama}
+                        </div>
+                        {idActiveDropdown === item.id ? (
+                          <div className="relative">
+                            <div className=" text-white block relative font-medium bg-pink-500 pb-4 rounded-b-lg  left-1/2 transform -translate-x-1/2 p-4">
+                              {item.sub.map((item, index) => {
+                                return (
+                                  <div key={index}>
+                                    <Link href={`/kategori?q=${item.nama}`}>
+                                      <div className="  cursor-pointer hover:text-pink-200 mb-1 text-white underline">
+                                        {item.nama}
+                                      </div>
+                                    </Link>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                    ) : (
+                      <Link href={`/kategori?q=${item.nama}`}>{item.nama}</Link>
+                    )}
+                  </div>
+                </SplideSlide>
+              ) : (
+                <></>
+              )}
+            </>
+          );
+        })}
       </Splide>
     </>
   );

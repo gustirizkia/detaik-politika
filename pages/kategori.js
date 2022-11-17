@@ -18,15 +18,22 @@ export async function getServerSideProps({ query: q }) {
     })
     .then((ress) => {
       data = ress.data.artikel.data;
-      parentKategori = ress.data.parent_kategori.nama;
+      if (ress.data.parent_kategori !== null) {
+        parentKategori = ress.data.parent_kategori.nama;
+      } else {
+        parentKategori = 1;
+      }
       // console.log("datas", data);
     })
     .catch((error) => {
       if (error.response) {
         // Request made and server responded
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
+        console.log("response data", error.response.data);
+        console.log("response status", error.response.status);
+        console.log("response header", error.response.headers);
+        console.log("Params nama", q.q);
+        console.log("Params nama", q.q);
+        console.log("Params nama", q.q);
       } else if (error.request) {
         // The request was made but no response was received
         console.log(error.request);
@@ -86,15 +93,15 @@ export default function Kategori({ datas, kategori, parent_kategori }) {
         </div>
       </div>
 
-      <div className="px-4 md:px-32 font-popins relative mt-10">
-        <div className="md:hidden mb-8">
+      <div className="px-4 md:px-32 font-popins relative md:mt-10">
+        <div className="md:hidden mb-8  sticky z-20 top-0 bg-white">
           <Navmobile />
         </div>
         <div className="grid grid-flow-row grid-cols-12 gap-8">
           <div className=" md:col-span-8 col-span-12">
             <div className="font-bold text-xl mb-10">
-              Kategori {">"} {parent_kategori ? parent_kategori + " | " : ""}{" "}
-              {kategori}
+              Kategori {">"}{" "}
+              {parent_kategori !== 1 ? parent_kategori + " | " : ""} {kategori}
               <hr className="mt-4" />
             </div>
             {datas.map((item, index) => {
@@ -103,7 +110,7 @@ export default function Kategori({ datas, kategori, parent_kategori }) {
                   <Berita
                     title={item.judul}
                     created_at={item.tanggal_dipublish}
-                    kategori={kategori}
+                    kategori={item.kategori.nama}
                     linkBerita={"/berita/" + item.slug}
                     image_url="https://via.placeholder.com/640x480.png"
                     gap={4}

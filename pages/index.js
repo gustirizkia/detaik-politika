@@ -11,7 +11,7 @@ import Terbaru from "../components/Home/Terbaru";
 import Footer from "../components/Home/Footer";
 import Navmobile from "../components/Navmobile";
 import Logo from "../public/logo.png";
-import { APIURL, JwtToken } from "../components/api/base_url";
+import { APIURL, JwtToken, STORAGEURL } from "../components/api/base_url";
 import "splide-nextjs/splide/dist/css/themes/splide-default.min.css";
 import { Splide, SplideSlide } from "splide-nextjs/react-splide";
 
@@ -19,6 +19,7 @@ export default function Home() {
   const [BeritaTerbaru, setBeritaTerbaru] = useState([]);
   const [Populer, setPopuler] = useState([]);
   const [BeritaUtama, setBeritaUtama] = useState([]);
+  const [GalleryData, setGalleryData] = useState([]);
   const [limitBerita, setLimitBerita] = useState(1);
   const [loadSkeleton, setLoadSkeleton] = useState(true);
   const [heightArtikel, setHeightArtikel] = useState(566);
@@ -43,6 +44,7 @@ export default function Home() {
     handleBeritaTerbaru();
     hendleFetchPopuler();
     handleBeritaUtama();
+    handleGallery();
   }, [limitBerita]);
 
   const hendleFetchPopuler = () => {
@@ -88,6 +90,12 @@ export default function Home() {
       .catch((err) => {
         setSkeletonBeritaTerbaru(false);
       });
+  };
+
+  const handleGallery = () => {
+    axios.get(APIURL + "gallery").then((ress) => {
+      setGalleryData(ress.data.data);
+    });
   };
 
   const handleLoadMore = () => {
@@ -167,11 +175,11 @@ export default function Home() {
         </div>
       </div>
       <div className="px-4 md:px-32 font-popins relative">
-        <div className="md:hidden">
+        <div className="md:hidden sticky z-20 top-0 bg-white">
           <Navmobile />
         </div>
 
-        <div className="mt-10">
+        <div className="mt-6 md:mt-10">
           <div className="md:grid grid-flow-row grid-cols-12 gap-10">
             <div className="col-span-12 md:col-span-8 relative rounded-xl overflow-hidden">
               <Splide
@@ -181,8 +189,8 @@ export default function Home() {
                   pagination: true,
                   arrows: true,
                   type: "loop",
-                  // autoWidth: true,
-                  width: "100%",
+                  autoWidth: true,
+                  // width: "100%",
                   // autoHeight: true,
                   // height: 200,
                   autoplay: true,
@@ -192,13 +200,14 @@ export default function Home() {
                   perMove: 1,
                   interval: 3000,
                   autoplay: true,
+                  fixedHeight: "30em",
                 }}
               >
                 {BeritaTerbaru.map((item, index) => {
                   return (
                     <SplideSlide key={index}>
                       <Image
-                        src={dummy}
+                        src={`${STORAGEURL}${item.image}`}
                         width="900"
                         height="900"
                         alt="Anis Baswedan"
@@ -258,7 +267,7 @@ export default function Home() {
                         created_at={item.tanggal}
                         kategori={item.kategori.nama}
                         linkBerita={"/berita/" + item.slug}
-                        image_url="https://via.placeholder.com/640x480.png"
+                        image_url={`${STORAGEURL}${item.image}`}
                         gap="10"
                       />
                     </div>
@@ -294,7 +303,7 @@ export default function Home() {
                         created_at={item.tanggal_dipublish}
                         kategori={item.kategori.nama}
                         linkBerita={"/berita/" + item.slug}
-                        image_url="https://via.placeholder.com/640x480.png"
+                        image_url={`${STORAGEURL}${item.image}`}
                         gap={4}
                       />
                     </div>
@@ -314,54 +323,21 @@ export default function Home() {
                 <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
                 <div className="bg-gray-800 p-8 text-white mt-8 rounded-xl">
                   <div className="grid grid-flow-row grid-cols-12 gap-6">
-                    <div className="col-span-6">
-                      <Image
-                        src={dummy}
-                        width={600}
-                        height={600}
-                        className="rounded-lg"
-                      />
-                      <div className="md:font-semibold font-medium mt-3 underline">
-                        Putin Dipastikan Tak Hadir di KTT G20 Bali, Bahlil
-                        Ingatkan Jangan Terbuai Ekonomi Tumbuh
-                      </div>
-                    </div>
-                    <div className="col-span-6">
-                      <Image
-                        src={dummy}
-                        width={600}
-                        height={600}
-                        className="rounded-lg"
-                      />
-                      <div className="font-semibold mt-3 underline">
-                        Putin Dipastikan Tak Hadir di KTT G20 Bali, Bahlil
-                        Ingatkan Jangan Terbuai Ekonomi Tumbuh
-                      </div>
-                    </div>
-                    <div className="col-span-6">
-                      <Image
-                        src={dummy}
-                        width={600}
-                        height={600}
-                        className="rounded-lg"
-                      />
-                      <div className="font-semibold mt-3 underline">
-                        Putin Dipastikan Tak Hadir di KTT G20 Bali, Bahlil
-                        Ingatkan Jangan Terbuai Ekonomi Tumbuh
-                      </div>
-                    </div>
-                    <div className="col-span-6">
-                      <Image
-                        src={dummy}
-                        width={600}
-                        height={600}
-                        className="rounded-lg"
-                      />
-                      <div className="font-semibold mt-3 underline">
-                        Putin Dipastikan Tak Hadir di KTT G20 Bali, Bahlil
-                        Ingatkan Jangan Terbuai Ekonomi Tumbuh
-                      </div>
-                    </div>
+                    {GalleryData.map((item, index) => {
+                      return (
+                        <div className="col-span-6" key={index}>
+                          <Image
+                            src={`${STORAGEURL}${item.image}`}
+                            width={600}
+                            height={400}
+                            className="rounded-lg"
+                          />
+                          <div className="md:font-semibold font-medium mt-3 underline">
+                            {item.nama}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

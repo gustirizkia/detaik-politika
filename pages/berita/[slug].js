@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Navbar from "../../components/navbar";
 import Navmobile from "../../components/Navmobile";
 import axios from "axios";
-import { APIURL, JwtToken } from "../../components/api/base_url";
+import { APIURL, JwtToken, STORAGEURL } from "../../components/api/base_url";
 import Image from "next/image";
 import Terbaru from "../../components/Home/Terbaru";
 import Wa from "../../public/images/logos_whatsapp-icon.png";
@@ -160,9 +160,10 @@ export default function DetailArtikel({ single, dataReady }) {
         <meta property="og:url" content={`${hostUrl}/${single.slug}`}></meta>
         <meta
           property="og:description"
-          content={`Deskripsi Artikel Detakpolitika | ${single.judul}`}
+          content={`${single.dekripsi_singkat}`}
         ></meta>
-        <meta property="og:image" content={single.image}></meta>
+        <meta name="keyword" content={single.keyword} />
+        <meta property="og:image" content={STORAGEURL + single.image}></meta>
       </Head>
       <div className="md:block hidden sticky bg-white  z-20 top-0 border-b">
         <div className="md:px-32 font-popins">
@@ -170,8 +171,8 @@ export default function DetailArtikel({ single, dataReady }) {
         </div>
       </div>
 
-      <div className="px-4 md:px-32 font-popins relative">
-        <div className="md:hidden">
+      <div className="px-4 md:px-32 font-popins relative  ">
+        <div className="md:hidden sticky z-20 top-0 bg-white">
           <Navmobile />
         </div>
 
@@ -192,13 +193,13 @@ export default function DetailArtikel({ single, dataReady }) {
               <div className="mt-2">
                 <div className="text-gray-400">{single.created_at}</div>
                 <div className="text-gray-400">
-                  Reporter : Aldo | Editor : Yoga
+                  Reporter : {single.penulis.name} | Editor : Yoga
                 </div>
               </div>
               {tagBagikan()}
             </div>
             <Image
-              src={single.image}
+              src={STORAGEURL + single.image}
               alt="Detakpolitik"
               width="900"
               height="900"
@@ -206,29 +207,11 @@ export default function DetailArtikel({ single, dataReady }) {
             />
 
             <div className="mt-6">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad
-              aliquid repudiandae culpa saepe quaerat vitae sapiente. Doloribus
-              at culpa aliquid eaque error quia iure in illum cumque adipisci,
-              ipsa veritatis maxime quis provident sint, esse quos, inventore
-              ipsum corrupti? Placeat ipsam quibusdam cumque iste, corporis
-              debitis omnis quo minus. Eveniet odit possimus qui, doloremque
-              magni ea tenetur harum maiores culpa cupiditate ducimus eligendi
-              voluptatibus ex mollitia vel doloribus quis laboriosam voluptate
-              totam voluptatem, commodi incidunt. Quam hic iure harum quisquam
-              et recusandae! Nisi obcaecati id impedit voluptatem ea esse, sit
-              suscipit necessitatibus illum eum veritatis a laboriosam dicta
-              vitae vero possimus blanditiis illo non ratione voluptas maxime
-              maiores. Dolorem totam ad consectetur id est tenetur eligendi
-              repellendus porro odio, reiciendis, unde sit praesentium ipsa enim
-              at! Nobis enim ratione eum libero hic porro. Incidunt, corporis.
-              Sint quas voluptatem laudantium corrupti officiis quisquam, dicta
-              libero officia illo voluptate! Ex beatae, animi id saepe quam
-              possimus unde suscipit tempore molestiae sed, voluptate mollitia
-              in ipsum numquam nostrum ab sapiente pariatur blanditiis aut?
-              Harum nesciunt illum ducimus numquam. Sed maiores, sit, facilis
-              eius reiciendis dolore quo neque obcaecati veniam, soluta fugiat
-              possimus excepturi eos aliquam labore id error veritatis odit
-              voluptatem eaque? Eius?
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: single.body,
+                }}
+              />
             </div>
 
             <div className="mt-20">{tagBagikan()}</div>
@@ -272,7 +255,7 @@ export default function DetailArtikel({ single, dataReady }) {
                     created_at={item.tanggal_dipublish}
                     kategori={item.kategori.nama}
                     linkBerita={"/berita/" + item.slug}
-                    image_url="https://via.placeholder.com/640x480.png"
+                    image_url={STORAGEURL + single.image}
                     gap={4}
                   />
                 </div>
