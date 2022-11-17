@@ -255,7 +255,7 @@ export default function DetailArtikel({ single, dataReady }) {
                     created_at={item.tanggal_dipublish}
                     kategori={item.kategori.nama}
                     linkBerita={"/berita/" + item.slug}
-                    image_url={STORAGEURL + single.image}
+                    image_url={STORAGEURL + item.image}
                     gap={4}
                   />
                 </div>
