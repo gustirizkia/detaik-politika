@@ -155,7 +155,6 @@ export default function DetailArtikel({ single, dataReady }) {
           content={`Detakpolitika | ${single.judul}`}
         ></meta>
 
-        <meta property="og:type" content="article"></meta>
         <meta
           property="og:title"
           content={"Judul DETAKPOLITIKA" + single.judul}
@@ -167,7 +166,21 @@ export default function DetailArtikel({ single, dataReady }) {
         ></meta>
         <meta name="keyword" content={single.keyword} />
         <meta property="og:image" content={STORAGEURL + single.image}></meta>
+        <meta property="og:type" content="website" />
+        <meta property="og:image:type" content="image/jpeg" />
+
+        <meta property="og:image:width" content="300" />
+        <meta property="og:image:height" content="300"></meta>
+        <link itemprop="thumbnailUrl" href={STORAGEURL + single.image} />
+        <meta
+          property="og:image"
+          itemprop="image"
+          content={STORAGEURL + single.image}
+        />
       </Head>
+      <span itemprop="image" itemscope itemtype="image/jpeg">
+        <link itemprop="url" href={STORAGEURL + single.image} />
+      </span>
       <div className="md:block hidden sticky bg-white  z-20 top-0 border-b">
         <div className="md:px-32 font-popins">
           <Navbar />
