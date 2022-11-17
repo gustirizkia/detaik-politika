@@ -128,7 +128,7 @@ export default function DetailArtikel({ single, dataReady }) {
           <div className="flex items-center">
             <div className="mx-4">
               <Link
-                href={`whatsapp://send?text=https://${hostUrl}/${single.slug}`}
+                href={`whatsapp://send?text=https://${hostUrl}/berita/${single.slug}`}
               >
                 <Image alt="Detakpolitika " src={Wa} width={24} height={30} />
               </Link>
