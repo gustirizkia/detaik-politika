@@ -155,10 +155,7 @@ export default function DetailArtikel({ single, dataReady }) {
           content={`Detakpolitika | ${single.judul}`}
         ></meta>
 
-        <meta
-          property="og:title"
-          content={"Judul DETAKPOLITIKA" + single.judul}
-        ></meta>
+        <meta property="og:title" content={single.judul}></meta>
         <meta property="og:url" content={`${hostUrl}/${single.slug}`}></meta>
         <meta
           property="og:description"
