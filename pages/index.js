@@ -11,6 +11,7 @@ import Terbaru from "../components/Home/Terbaru";
 import Footer from "../components/Home/Footer";
 import Navmobile from "../components/Navmobile";
 import Logo from "../public/logo.png";
+import LogoFull from "../public/logoFull.jpg";
 import { APIURL, JwtToken, STORAGEURL } from "../components/api/base_url";
 import "splide-nextjs/splide/dist/css/themes/splide-default.min.css";
 import { Splide, SplideSlide } from "splide-nextjs/react-splide";
@@ -25,12 +26,27 @@ export default function Home() {
   const [heightArtikel, setHeightArtikel] = useState(566);
   const [SkeletonBeritaTerbaru, setSkeletonBeritaTerbaru] = useState(true);
 
+  const [tempData, setTempData] = useState([]);
+  const testAja = () => {
+    const data = fetch(
+      "https://jsonplaceholder.typicode.com/todos?_limit=10"
+    ).then((response) => response.json());
+    setTempData(data);
+  };
+
   useEffect(() => {
+    testAja();
     window.addEventListener("scroll", handleScroll, false);
-  });
+  }, []);
 
   const handleScroll = () => {
     const position = window.pageYOffset;
+
+    const lastLoad = document.querySelector(
+      ".berita-utama-list > .berita-utama:last-child"
+    );
+
+    // console.log("lastLoad", lastLoad);
 
     if (position >= 1632 && heightArtikel === 566) {
     }
@@ -67,7 +83,7 @@ export default function Home() {
         },
       })
       .then((ress) => {
-        // console.log(ress.data.data.data);
+        console.log("berita utama", ress.data);
         setBeritaUtama(ress.data.data.data);
         setLoadSkeleton(false);
       })
@@ -109,6 +125,7 @@ export default function Home() {
         },
       })
       .then((ress) => {
+        console.log("Handle load more runn");
         console.log(ress.data.data.data);
         ress.data.data.data.forEach((element) => {
           setBeritaUtama((BeritaUtama) => [...BeritaUtama, element]);
@@ -150,7 +167,7 @@ export default function Home() {
     <>
       <Head>
         <title>Detak Politika | Nasional</title>
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/logoFull.jpg" />
         <meta
           name="keywords"
           content="berita hari ini, berita harian, berita terkini, berita terbaru, berita indonesia, berita terpopuler, berita, info terkini, berita dunia, peristiwa hari ini"
@@ -160,7 +177,7 @@ export default function Home() {
           name="description"
           content="detakpolitik.com - Kabar terbaru hari ini Indonesia dan Dunia, Kabar terkini news, peristiwa, ekonomi, hukum"
         ></meta>
-        <meta property="og:image" content={Logo.src} />
+        <meta property="og:image" content={LogoFull.src} />
         <meta
           property="og:description"
           content="detakpolitik.com - Kabar terbaru hari ini Indonesia dan Dunia, Kabar terkini news, peristiwa, ekonomi, hukum"
@@ -169,6 +186,7 @@ export default function Home() {
         <meta property="og:image:width" content="300" />
         <meta property="og:image:height" content="300" />
       </Head>
+
       <div className="md:block hidden sticky bg-white  z-20 top-0 border-b">
         <div className="md:px-32 font-popins">
           <Navbar />
@@ -182,46 +200,95 @@ export default function Home() {
         <div className="mt-6 md:mt-10">
           <div className="md:grid grid-flow-row grid-cols-12 gap-10">
             <div className="col-span-12 md:col-span-8 relative rounded-xl overflow-hidden">
-              <Splide
-                hasTrack={false}
-                options={{
-                  gap: "16px",
-                  pagination: true,
-                  arrows: true,
-                  type: "loop",
-                  autoWidth: true,
-                  // width: "100%",
-                  // autoHeight: true,
-                  // height: 200,
-                  autoplay: true,
-                  pauseOnHover: false,
-                  resetProgress: false,
-                  perPage: 1,
-                  perMove: 1,
-                  interval: 3000,
-                  autoplay: true,
-                  fixedHeight: "30em",
-                }}
-              >
-                {BeritaTerbaru.map((item, index) => {
-                  return (
-                    <SplideSlide key={index}>
-                      <Image
-                        src={`${STORAGEURL}${item.image}`}
-                        width="900"
-                        height="900"
-                        alt="Anis Baswedan"
-                      />
-                      <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl">
-                        <div className="text-xl underline">{item.judul}</div>
-                        <div className="text-pink-500">
-                          {item.kategori.nama}
+              <div className="hidden md:block">
+                <Splide
+                  hasTrack={false}
+                  options={{
+                    gap: "16px",
+                    pagination: true,
+                    arrows: true,
+                    type: "loop",
+                    autoWidth: true,
+                    // width: "100%",
+                    // autoHeight: true,
+                    // height: 200,
+                    autoplay: true,
+                    pauseOnHover: false,
+                    resetProgress: false,
+                    perPage: 1,
+                    perMove: 1,
+                    interval: 3000,
+                    autoplay: true,
+                    fixedHeight: "30em",
+                  }}
+                >
+                  {BeritaTerbaru.map((item, index) => {
+                    return (
+                      <SplideSlide key={index}>
+                        <Image
+                          src={`${STORAGEURL}${item.image}`}
+                          width="900"
+                          height="900"
+                          alt="Anis Baswedan"
+                        />
+                        <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl">
+                          <div className="text-xl underline">{item.judul}</div>
+                          <div className="text-pink-500">
+                            {item.kategori.nama}
+                          </div>
                         </div>
-                      </div>
-                    </SplideSlide>
-                  );
-                })}
-              </Splide>
+                      </SplideSlide>
+                    );
+                  })}
+                </Splide>
+              </div>
+              <div className="md:hidden">
+                <Splide
+                  hasTrack={false}
+                  options={{
+                    gap: "16px",
+                    pagination: true,
+                    arrows: true,
+                    type: "loop",
+                    // autoWidth: true,
+                    width: "100%",
+                    // autoHeight: true,
+                    height: 360,
+                    autoplay: true,
+                    pauseOnHover: false,
+                    resetProgress: false,
+                    perPage: 1,
+                    perMove: 1,
+                    interval: 3000,
+                    autoplay: true,
+                    fixedHeight: "30em",
+                  }}
+                >
+                  {BeritaTerbaru.map((item, index) => {
+                    return (
+                      <SplideSlide key={index}>
+                        <Link href={`/berita/${item.slug}`}>
+                          <Image
+                            src={`${STORAGEURL}${item.image}`}
+                            alt="Detakpolitik"
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-xl"
+                          />
+                          <div className="bg-gray-900 absolute bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl">
+                            <div className="text-xl underline">
+                              {item.judul}
+                            </div>
+                            <div className="text-pink-500">
+                              {item.kategori.nama}
+                            </div>
+                          </div>
+                        </Link>
+                      </SplideSlide>
+                    );
+                  })}
+                </Splide>
+              </div>
             </div>
             <div className="col-span-12 md:col-span-4 mt-8 md:mt-0">
               <div className="text-2xl font-bold text-gray-800">Terpopuler</div>
@@ -235,7 +302,7 @@ export default function Home() {
                           {index + 1}
                         </div>
                         <div className="my-auto">
-                          <div className="font-semibold leading-none">
+                          <div className="font-semibold leading-none hover:text-pink-500">
                             {item.judul}
                           </div>
                           <div className="text-pink-500 text-sm">
@@ -249,30 +316,33 @@ export default function Home() {
               })}
             </div>
           </div>
+
           {/* Berita utama */}
           <div className="my-10">
             <div className="md:grid grid-flow-row grid-cols-2 md:grid-cols-12 gap-10">
-              <div className="col-span-12 md:col-span-8">
+              <div className="col-span-12 md:col-span-8 ">
                 <div className="mb-8">
                   <div className="text-2xl font-bold text-gray-800">
                     Berita Utama
                   </div>
                   <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
                 </div>
-                {BeritaUtama.map((item, index) => {
-                  return (
-                    <div className="" key={index}>
-                      <Berita
-                        title={item.judul}
-                        created_at={item.tanggal}
-                        kategori={item.kategori.nama}
-                        linkBerita={"/berita/" + item.slug}
-                        image_url={`${STORAGEURL}${item.image}`}
-                        gap="10"
-                      />
-                    </div>
-                  );
-                })}
+                <div className="berita-utama-list">
+                  {BeritaUtama.map((item, index) => {
+                    return (
+                      <div className="berita-utama" key={index}>
+                        <Berita
+                          title={item.judul}
+                          created_at={item.tanggal}
+                          kategori={item.kategori.nama}
+                          linkBerita={"/berita/" + item.slug}
+                          image_url={`${STORAGEURL}${item.image}`}
+                          gap="10"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
                 {!loadSkeleton || tagSkeleton()}
 
                 <div className="flex">
