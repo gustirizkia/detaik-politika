@@ -138,7 +138,7 @@ export default function Navmobile() {
           drag: "free",
           pagination: false,
           arrows: false,
-          type: "loop",
+          // type: "loop",
           autoWidth: true,
         }}
         className="pb-4 "
