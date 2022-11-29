@@ -25,6 +25,8 @@ export default function Home() {
   const [loadSkeleton, setLoadSkeleton] = useState(true);
   const [heightArtikel, setHeightArtikel] = useState(566);
   const [SkeletonBeritaTerbaru, setSkeletonBeritaTerbaru] = useState(true);
+  const [BeritaRekomendasi, setBeritaRekomendasi] = useState([]);
+  const [BeritaPolitik, setPolitik] = useState([]);
 
   const [tempData, setTempData] = useState([]);
   const testAja = () => {
@@ -61,7 +63,33 @@ export default function Home() {
     hendleFetchPopuler();
     handleBeritaUtama();
     handleGallery();
+    handleBeritaRekomendasi();
+    handlePolitik();
   }, [limitBerita]);
+
+  const handlePolitik = () => {
+    axios
+      .get(APIURL + "artikel/politik", {
+        headers: {
+          "Jwt-Key": JwtToken,
+        },
+      })
+      .then((ress) => {
+        setPolitik(ress.data);
+      });
+  };
+
+  const handleBeritaRekomendasi = () => {
+    axios
+      .get(APIURL + "artikel/rekomendasi", {
+        headers: {
+          "Jwt-Key": JwtToken,
+        },
+      })
+      .then((ress) => {
+        setBeritaRekomendasi(ress.data.data);
+      });
+  };
 
   const hendleFetchPopuler = () => {
     axios
@@ -468,35 +496,60 @@ export default function Home() {
             </div>
             <div className="grid grid-flow-row grid-cols-12 gap-8">
               <div className="col-span-12 md:col-span-8 relative rounded-xl overflow-hidden">
-                <Image src={dummy} layout="responsive" alt="Anis Baswedan" />
-                <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full">
-                  <div className="text-xl underline">
-                    Deklarasi Relawan Anies Presiden 2024
-                  </div>
-                  <div className="text-pink-500">Politik</div>
-                </div>
+                {BeritaRekomendasi.length > 0 ? (
+                  <>
+                    <Image
+                      src={STORAGEURL + BeritaRekomendasi[0].image}
+                      layout="responsive"
+                      width={300}
+                      height={300}
+                      alt={BeritaRekomendasi[0].judul}
+                    />
+                    <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full">
+                      <div className="text-xl underline">
+                        {BeritaRekomendasi[0].judul}
+                      </div>
+                      <div className="text-pink-500">
+                        {BeritaRekomendasi[0].kategori.nama}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
               <div className="col-span-12 md:col-span-4">
-                <div className="grid grid-flow-row grid-cols-12 gap-4">
-                  <div className="col-span-6">
-                    <div className="w-full rounded-xl h-44 relative">
-                      <Image
-                        src={dummy}
-                        alt="Detakpolitik"
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-xl"
-                      />
-                    </div>
-                  </div>
+                {BeritaRekomendasi.slice(0, 3).map((item) => {
+                  return (
+                    <>
+                      {BeritaRekomendasi[0].id !== item.id ? (
+                        <>
+                          <div className="grid grid-flow-row grid-cols-12 gap-4 mb-4">
+                            <div className="col-span-6">
+                              <div className="w-full rounded-xl h-44 relative">
+                                <Image
+                                  src={STORAGEURL + item.image}
+                                  alt="Detakpolitik"
+                                  layout="fill"
+                                  objectFit="cover"
+                                  className="rounded-xl"
+                                />
+                              </div>
+                            </div>
 
-                  <div className="md:col-span-6 col-span-6 flex items-center">
-                    <div className="text-lg font-semibold text-gray-900">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Natus.
-                    </div>
-                  </div>
-                </div>
+                            <div className="md:col-span-6 col-span-6 flex items-center">
+                              <div className="text-lg font-semibold text-gray-900">
+                                {item.judul}
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -511,90 +564,27 @@ export default function Home() {
             </div>
 
             <div className="grid grid-flow-row grid-cols-12 gap-8">
-              <div className="md:col-span-4 col-span-6">
-                <div className="w-full rounded-xl h-24 md:h-60 relative">
-                  <Image
-                    src={dummy}
-                    alt="Detakpolitik"
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-xl"
-                  />
-                </div>
-                <div className="md:text-lg font-medium md:font-bold underline mt-4  ">
-                  Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit.
-                </div>
-              </div>
-              <div className="md:col-span-4 col-span-6">
-                <div className="w-full rounded-xl h-24 md:h-60 relative">
-                  <Image
-                    src={dummy}
-                    alt="Detakpolitik"
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-xl"
-                  />
-                </div>
-                <div className="md:text-lg font-medium md:font-bold underline mt-4  ">
-                  Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit.
-                </div>
-              </div>
-              <div className="md:col-span-4 col-span-6">
-                <div className="w-full rounded-xl h-24 md:h-60 relative">
-                  <Image
-                    src={dummy}
-                    alt="Detakpolitik"
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-xl"
-                  />
-                </div>
-                <div className="md:text-lg font-medium md:font-bold underline mt-4  ">
-                  Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit.
-                </div>
-              </div>
-              <div className="md:col-span-4 col-span-6">
-                <div className="w-full rounded-xl h-24 md:h-60 relative">
-                  <Image
-                    src={dummy}
-                    alt="Detakpolitik"
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-xl"
-                  />
-                </div>
-                <div className="md:text-lg font-medium md:font-bold underline mt-4  ">
-                  Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit.
-                </div>
-              </div>
-              <div className="md:col-span-4 col-span-6">
-                <div className="w-full rounded-xl h-24 md:h-60 relative">
-                  <Image
-                    src={dummy}
-                    alt="Detakpolitik"
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-xl"
-                  />
-                </div>
-                <div className="md:text-lg font-medium md:font-bold underline mt-4  ">
-                  Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit.
-                </div>
-              </div>
-              <div className="md:col-span-4 col-span-6">
-                <div className="w-full rounded-xl h-24 md:h-60 relative">
-                  <Image
-                    src={dummy}
-                    alt="Detakpolitik"
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-xl"
-                  />
-                </div>
-                <div className="md:text-lg font-medium md:font-bold underline mt-4  ">
-                  Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit.
-                </div>
-              </div>
+              {BeritaPolitik.map((item) => {
+                return (
+                  <>
+                    <div className="md:col-span-4 col-span-6">
+                      <div className="w-full rounded-xl h-24 md:h-60 relative">
+                        <Image
+                          src={STORAGEURL + item.image}
+                          alt="Detakpolitik"
+                          layout="fill"
+                          objectFit="cover"
+                          className="rounded-xl"
+                        />
+                      </div>
+                      <div className="md:text-lg font-medium md:font-bold underline mt-4  ">
+                        {/* {item.judul} */}
+                        {item.judul}
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
             </div>
           </div>
           {/* endBerita Politik */}

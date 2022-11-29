@@ -18,16 +18,16 @@ export default function Footer() {
       <div className="my-10 md:px-32 px-4">
         <div className="flex justify-end">
           <div className="font-bold ">Tentang Kami</div>{" "}
-          <span className="font-bold mx-4">|</span>
+          <span className="font-bold mx-1 md:mx-4">|</span>
           <div className="font-bold">Redaksi</div>
-          <span className="font-bold mx-4">|</span>
+          <span className="font-bold mx-1 md:mx-4">|</span>
           <div className="font-bold">Disclaimer</div>
-          <span className="font-bold mx-4">|</span>
+          <span className="font-bold mx-1 md:mx-4">|</span>
           <div className="font-bold">Peta Situs</div>
         </div>
         <div className="flex justify-end mt-4">
           <div className="font-bold">Kontak</div>
-          <span className="font-bold mx-4">|</span>
+          <span className="font-bold mx-1 md:mx-4">|</span>
           <div className="font-bold">Pedoman Siber</div>
         </div>
 
