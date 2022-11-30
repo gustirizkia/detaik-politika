@@ -16,6 +16,11 @@ import { APIURL, JwtToken, STORAGEURL } from "../components/api/base_url";
 import "splide-nextjs/splide/dist/css/themes/splide-default.min.css";
 import { Splide, SplideSlide } from "splide-nextjs/react-splide";
 
+import Slider from "react-slick";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 export default function Home() {
   const [BeritaTerbaru, setBeritaTerbaru] = useState([]);
   const [Populer, setPopuler] = useState([]);
@@ -191,6 +196,16 @@ export default function Home() {
     });
   };
 
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 100,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    height: "100px",
+  };
+
   return (
     <>
       <Head>
@@ -229,46 +244,29 @@ export default function Home() {
           <div className="md:grid grid-flow-row grid-cols-12 gap-10">
             <div className="col-span-12 md:col-span-8 relative rounded-xl overflow-hidden">
               <div className="hidden md:block">
-                <Splide
-                  hasTrack={false}
-                  options={{
-                    gap: "16px",
-                    pagination: true,
-                    arrows: true,
-                    type: "loop",
-                    autoWidth: true,
-                    // width: "100%",
-                    // autoHeight: true,
-                    // height: 200,
-                    autoplay: true,
-                    pauseOnHover: false,
-                    resetProgress: false,
-                    perPage: 1,
-                    perMove: 1,
-                    interval: 3000,
-                    autoplay: true,
-                    fixedHeight: "30em",
-                  }}
-                >
+                <Slider {...settings}>
                   {BeritaTerbaru.map((item, index) => {
                     return (
-                      <SplideSlide key={index}>
-                        <Image
-                          src={`${STORAGEURL}${item.image}`}
-                          width="900"
-                          height="900"
-                          alt="Anis Baswedan"
-                        />
+                      <div key={index}>
+                        <div className="h-96">
+                          <Image
+                            src={`${STORAGEURL}${item.image}`}
+                            width="900"
+                            height="900"
+                            alt="Detak Politika"
+                            className="object-cover object-center"
+                          />
+                        </div>
                         <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl">
                           <div className="text-xl underline">{item.judul}</div>
                           <div className="text-pink-500">
                             {item.kategori.nama}
                           </div>
                         </div>
-                      </SplideSlide>
+                      </div>
                     );
                   })}
-                </Splide>
+                </Slider>
               </div>
               <div className="md:hidden">
                 <Splide

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { APIURL, JwtToken } from "../components/api/base_url";
+import { APIURL, JwtToken, STORAGEURL } from "../components/api/base_url";
 import Berita from "../components/Home/Berita";
 import Footer from "../components/Home/Footer";
 import Terbaru from "../components/Home/Terbaru";
@@ -112,7 +112,7 @@ export default function Kategori({ datas, kategori, parent_kategori }) {
                     created_at={item.tanggal_dipublish}
                     kategori={item.kategori.nama}
                     linkBerita={"/berita/" + item.slug}
-                    image_url="https://via.placeholder.com/640x480.png"
+                    image_url={STORAGEURL + item.image}
                     gap={4}
                   />
                 </div>
@@ -130,7 +130,7 @@ export default function Kategori({ datas, kategori, parent_kategori }) {
                     created_at={item.tanggal_dipublish}
                     kategori={item.kategori.nama}
                     linkBerita={"/berita/" + item.slug}
-                    image_url="https://via.placeholder.com/640x480.png"
+                    image_url={STORAGEURL + item.image}
                     gap={4}
                   />
                 </div>
