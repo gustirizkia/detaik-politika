@@ -279,33 +279,35 @@ export default function Home() {
                 <Slider {...settings}>
                   {BeritaTerbaru.map((item, index) => {
                     return (
-                      <div key={index}>
-                        <div className="md:h-96 h-40">
-                          <Image
-                            src={`${STORAGEURL}${item.image}`}
-                            width="1000"
-                            height="1000"
-                            alt="Detak Politika"
-                            className="object-cover object-center"
-                          />
+                      <Link href={"/berita/" + item.slug}>
+                        <div key={index}>
+                          <div className="md:h-96 h-40">
+                            <Image
+                              src={`${STORAGEURL}${item.image}`}
+                              width="1000"
+                              height="1000"
+                              alt="Detak Politika"
+                              className="object-cover object-center"
+                            />
+                          </div>
+                          <div className="bg-gray-900 md:absolute md:bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl md:block hidden">
+                            <div className="md:text-xl text-sm underline">
+                              {item.judul}
+                            </div>
+                            <div className="text-pink-500">
+                              {item.kategori.nama}
+                            </div>
+                          </div>
+                          <div className="bg-gray-900 relative px-4 py-4 z-10 md:hidden">
+                            <div className="md:text-xl text-sm underline text-white">
+                              {item.judul}
+                            </div>
+                            <div className="text-pink-500">
+                              {item.kategori.nama}
+                            </div>
+                          </div>
                         </div>
-                        <div className="bg-gray-900 md:absolute md:bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl md:block hidden">
-                          <div className="md:text-xl text-sm underline">
-                            {item.judul}
-                          </div>
-                          <div className="text-pink-500">
-                            {item.kategori.nama}
-                          </div>
-                        </div>
-                        <div className="bg-gray-900 relative px-4 py-4 z-10 md:hidden">
-                          <div className="md:text-xl text-sm underline text-white">
-                            {item.judul}
-                          </div>
-                          <div className="text-pink-500">
-                            {item.kategori.nama}
-                          </div>
-                        </div>
-                      </div>
+                      </Link>
                     );
                   })}
                 </Slider>
@@ -502,21 +504,23 @@ export default function Home() {
               <div className="col-span-12 md:col-span-8 relative rounded-xl overflow-hidden">
                 {BeritaRekomendasi.length > 0 ? (
                   <>
-                    <Image
-                      src={STORAGEURL + BeritaRekomendasi[0].image}
-                      layout="responsive"
-                      width={300}
-                      height={300}
-                      alt={BeritaRekomendasi[0].judul}
-                    />
-                    <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full">
-                      <div className="text-xl underline">
-                        {BeritaRekomendasi[0].judul}
+                    <Link href={"/berita/" + BeritaRekomendasi[0].slug}>
+                      <Image
+                        src={STORAGEURL + BeritaRekomendasi[0].image}
+                        layout="responsive"
+                        width={300}
+                        height={300}
+                        alt={BeritaRekomendasi[0].judul}
+                      />
+                      <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full">
+                        <div className="text-xl underline">
+                          {BeritaRekomendasi[0].judul}
+                        </div>
+                        <div className="text-pink-500">
+                          {BeritaRekomendasi[0].kategori.nama}
+                        </div>
                       </div>
-                      <div className="text-pink-500">
-                        {BeritaRekomendasi[0].kategori.nama}
-                      </div>
-                    </div>
+                    </Link>
                   </>
                 ) : (
                   <></>
@@ -528,25 +532,27 @@ export default function Home() {
                     <>
                       {BeritaRekomendasi[0].id !== item.id ? (
                         <>
-                          <div className="grid grid-flow-row grid-cols-12 gap-4 mb-4">
-                            <div className="col-span-6">
-                              <div className="w-full rounded-xl h-44 relative">
-                                <Image
-                                  src={STORAGEURL + item.image}
-                                  alt="Detakpolitik"
-                                  layout="fill"
-                                  objectFit="cover"
-                                  className="rounded-xl"
-                                />
+                          <Link href={"/berita/" + item.slug}>
+                            <div className="grid grid-flow-row grid-cols-12 gap-4 mb-4">
+                              <div className="col-span-6">
+                                <div className="w-full rounded-xl h-44 relative">
+                                  <Image
+                                    src={STORAGEURL + item.image}
+                                    alt="Detakpolitik"
+                                    layout="fill"
+                                    objectFit="cover"
+                                    className="rounded-xl"
+                                  />
+                                </div>
                               </div>
-                            </div>
 
-                            <div className="md:col-span-6 col-span-6 flex items-center">
-                              <div className="text-lg font-semibold text-gray-900">
-                                {item.judul}
+                              <div className="md:col-span-6 col-span-6 flex items-center">
+                                <div className="text-lg font-semibold text-gray-900">
+                                  {item.judul}
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          </Link>
                         </>
                       ) : (
                         <></>
@@ -572,19 +578,21 @@ export default function Home() {
                 return (
                   <>
                     <div className="md:col-span-4 col-span-6">
-                      <div className="w-full rounded-xl h-24 md:h-60 relative">
-                        <Image
-                          src={STORAGEURL + item.image}
-                          alt="Detakpolitik"
-                          layout="fill"
-                          objectFit="cover"
-                          className="rounded-xl"
-                        />
-                      </div>
-                      <div className="md:text-lg font-medium md:font-bold underline mt-4  ">
-                        {/* {item.judul} */}
-                        {item.judul}
-                      </div>
+                      <Link href={"/berita/" + item.slug}>
+                        <div className="w-full rounded-xl h-24 md:h-60 relative">
+                          <Image
+                            src={STORAGEURL + item.image}
+                            alt="Detakpolitik"
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-xl"
+                          />
+                        </div>
+                        <div className="md:text-lg font-medium md:font-bold underline mt-4  ">
+                          {/* {item.judul} */}
+                          {item.judul}
+                        </div>
+                      </Link>
                     </div>
                   </>
                 );
