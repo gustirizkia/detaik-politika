@@ -32,6 +32,7 @@ export default function Home() {
   const [SkeletonBeritaTerbaru, setSkeletonBeritaTerbaru] = useState(true);
   const [BeritaRekomendasi, setBeritaRekomendasi] = useState([]);
   const [BeritaPolitik, setPolitik] = useState([]);
+  const [showLoadMore, setShowLoadMore] = useState(true);
 
   const [tempData, setTempData] = useState([]);
   const testAja = () => {
@@ -158,8 +159,9 @@ export default function Home() {
         },
       })
       .then((ress) => {
-        console.log("Handle load more runn");
-        console.log(ress.data.data.data);
+        // console.log("Handle load more runn");
+        // console.log(ress.data.data.current_page >= ress.data.data.last_page);
+
         ress.data.data.data.forEach((element) => {
           setBeritaUtama((BeritaUtama) => [...BeritaUtama, element]);
         });
@@ -168,6 +170,9 @@ export default function Home() {
 
         setLoadSkeleton(false);
         // setBeritaUtama(ress.data.data.data);
+        if (ress.data.data.current_page >= ress.data.data.last_page) {
+          setShowLoadMore(false);
+        }
       })
       .catch((err) => {
         setLoadSkeleton(false);
@@ -242,23 +247,33 @@ export default function Home() {
 
         <div className="mt-6 md:mt-10">
           <div className="md:grid grid-flow-row grid-cols-12 gap-10">
-            <div className="col-span-12 md:col-span-8 relative rounded-xl overflow-hidden">
-              <div className="hidden md:block">
+            <div className="col-span-12 md:col-span-8 relative rounded-xl md:overflow-hidden">
+              <div className=" md:block">
                 <Slider {...settings}>
                   {BeritaTerbaru.map((item, index) => {
                     return (
                       <div key={index}>
-                        <div className="h-96">
+                        <div className="md:h-96 h-40">
                           <Image
                             src={`${STORAGEURL}${item.image}`}
-                            width="900"
-                            height="900"
+                            width="1000"
+                            height="1000"
                             alt="Detak Politika"
                             className="object-cover object-center"
                           />
                         </div>
-                        <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl">
-                          <div className="text-xl underline">{item.judul}</div>
+                        <div className="bg-gray-900 md:absolute md:bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl md:block hidden">
+                          <div className="md:text-xl text-sm underline">
+                            {item.judul}
+                          </div>
+                          <div className="text-pink-500">
+                            {item.kategori.nama}
+                          </div>
+                        </div>
+                        <div className="bg-gray-900 relative px-4 py-4 z-10 md:hidden">
+                          <div className="md:text-xl text-sm underline text-white">
+                            {item.judul}
+                          </div>
                           <div className="text-pink-500">
                             {item.kategori.nama}
                           </div>
@@ -267,53 +282,6 @@ export default function Home() {
                     );
                   })}
                 </Slider>
-              </div>
-              <div className="md:hidden">
-                <Splide
-                  hasTrack={false}
-                  options={{
-                    gap: "16px",
-                    pagination: true,
-                    arrows: true,
-                    type: "loop",
-                    // autoWidth: true,
-                    width: "100%",
-                    // autoHeight: true,
-                    height: 360,
-                    autoplay: true,
-                    pauseOnHover: false,
-                    resetProgress: false,
-                    perPage: 1,
-                    perMove: 1,
-                    interval: 3000,
-                    autoplay: true,
-                    fixedHeight: "30em",
-                  }}
-                >
-                  {BeritaTerbaru.map((item, index) => {
-                    return (
-                      <SplideSlide key={index}>
-                        <Link href={`/berita/${item.slug}`}>
-                          <Image
-                            src={`${STORAGEURL}${item.image}`}
-                            alt="Detakpolitik"
-                            layout="fill"
-                            objectFit="cover"
-                            className="rounded-xl"
-                          />
-                          <div className="bg-gray-900 absolute bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl">
-                            <div className="text-xl underline">
-                              {item.judul}
-                            </div>
-                            <div className="text-pink-500">
-                              {item.kategori.nama}
-                            </div>
-                          </div>
-                        </Link>
-                      </SplideSlide>
-                    );
-                  })}
-                </Splide>
               </div>
             </div>
             <div className="col-span-12 md:col-span-4 mt-8 md:mt-0">
@@ -371,14 +339,16 @@ export default function Home() {
                 </div>
                 {!loadSkeleton || tagSkeleton()}
 
-                <div className="flex">
-                  <div
-                    className="text-center cursor-pointer text-pink-500 border-2 border-pink-500 rounded-full px-4 py-2 inline-block mx-auto"
-                    onClick={handleLoadMore}
-                  >
-                    Load more
+                {!showLoadMore || (
+                  <div className="flex">
+                    <div
+                      className="text-center cursor-pointer text-pink-500 border-2 border-pink-500 rounded-full px-4 py-2 inline-block mx-auto"
+                      onClick={handleLoadMore}
+                    >
+                      Load more
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
               <div className="col-span-12 md:col-span-4">
                 <div className="mb-8">
