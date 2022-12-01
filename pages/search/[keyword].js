@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { APIURL, JwtToken } from "../../components/api/base_url";
+import { APIURL, JwtToken, STORAGEURL } from "../../components/api/base_url";
 import Berita from "../../components/Home/Berita";
 import Navbar from "../../components/navbar";
 import Navmobile from "../../components/Navmobile";
@@ -11,6 +11,7 @@ export default function CariPage() {
   const { keyword } = router.query;
   const [BeritaUtama, setBeritaUtama] = useState([]);
   const [loadSkeleton, setLoadSkeleton] = useState(true);
+  const [showLoadMore, setShowLoadMore] = useState(true);
 
   const fetchData = () => {
     setLoadSkeleton(true);
@@ -66,7 +67,7 @@ export default function CariPage() {
                 created_at={item.tanggal}
                 kategori={item.kategori.nama}
                 linkBerita={"/berita/" + item.slug}
-                image_url="https://via.placeholder.com/640x480.png"
+                image_url={STORAGEURL + item.image}
                 gap="10"
               />
             </div>
@@ -100,14 +101,14 @@ export default function CariPage() {
               {loadSkeleton || tagBerita()}
               {!loadSkeleton || tagSkeleton()}
 
-              <div className="flex">
+              {/* <div className="flex">
                 <div
                   className="text-center cursor-pointer text-pink-500 border-2 border-pink-500 rounded-full px-4 py-2 inline-block mx-auto"
                   // onClick={handleLoadMore}
                 >
                   Load more
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
