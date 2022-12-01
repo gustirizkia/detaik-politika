@@ -35,43 +35,35 @@ export default function Home() {
   const [showLoadMore, setShowLoadMore] = useState(true);
 
   const [tempData, setTempData] = useState([]);
-  const testAja = () => {
-    const data = fetch(
-      "https://jsonplaceholder.typicode.com/todos?_limit=10"
-    ).then((response) => response.json());
-    setTempData(data);
-  };
+  const [videoPertama, setVideoPertama] = useState({});
+  const [listVideo, setListVideo] = useState([]);
 
   useEffect(() => {
-    testAja();
-    window.addEventListener("scroll", handleScroll, false);
-  }, []);
-
-  const handleScroll = () => {
-    const position = window.pageYOffset;
-
-    const lastLoad = document.querySelector(
-      ".berita-utama-list > .berita-utama:last-child"
-    );
-
-    // console.log("lastLoad", lastLoad);
-
-    if (position >= 1632 && heightArtikel === 566) {
-    }
-  };
-
-  const handleCek = () => {
-    setHeightArtikel(heightArtikel * 2);
-  };
+    handleBeritaUtama();
+  }, [limitBerita]);
 
   useEffect(() => {
     handleBeritaTerbaru();
     hendleFetchPopuler();
-    handleBeritaUtama();
     handleGallery();
     handleBeritaRekomendasi();
     handlePolitik();
-  }, [limitBerita]);
+    handleVideo();
+  }, []);
+
+  const handleVideo = () => {
+    axios
+      .get(APIURL + "video-list", {
+        headers: {
+          "Jwt-Key": JwtToken,
+        },
+      })
+      .then((ress) => {
+        console.log("data video", ress.data);
+        setVideoPertama(ress.data.pertama);
+        setListVideo(ress.data.list);
+      });
+  };
 
   const handlePolitik = () => {
     axios
@@ -209,6 +201,41 @@ export default function Home() {
     slidesToScroll: 1,
     autoplay: true,
     height: "100px",
+  };
+  var settingsVideo = {
+    dots: true,
+    infinite: true,
+    speed: 100,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    autoplay: true,
+    height: "100px",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -391,7 +418,7 @@ export default function Home() {
                   <div className="grid grid-flow-row grid-cols-12 gap-6">
                     {GalleryData.map((item, index) => {
                       return (
-                        <div className="col-span-6" key={index}>
+                        <div className="col-span-12 md:col-span-6" key={index}>
                           <Image
                             src={`${STORAGEURL}${item.image}`}
                             width={600}
@@ -412,22 +439,21 @@ export default function Home() {
                 <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
                 <div className="bg-gray-800 p-8 text-white mt-8 rounded-xl">
                   <div className="grid grid-flow-row grid-cols-12 gap-6">
-                    <div className="col-span-6">
+                    <div className="col-span-12 md:col-span-6">
                       <iframe
                         id="ytplayer"
                         className="rounded-lg"
                         type="text/html"
                         width="100%"
-                        src={`https://www.youtube.com/embed/PG8DIp-MQ3M?autoplay=0&origin=http://example.com&controls=0&rel=1`}
+                        src={`https://www.youtube.com/embed/${videoPertama.link}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
                         frameborder="0"
                       ></iframe>
                     </div>
 
-                    <div className="col-span-6 flex items-center">
+                    <div className="col-span-12 md:col-span-6 flex items-center">
                       <div className="font-semibold">
-                        Anies Baswedan Bicara soal Partai Politik dan Misi yang
-                        Harus Dilaksanakan
-                        <div className="text-pink-500">Politik</div>
+                        {videoPertama.nama}
+                        {/* <div className="text-pink-500">Politik</div> */}
                       </div>
                     </div>
                   </div>
@@ -437,16 +463,25 @@ export default function Home() {
                       Video Terbaru
                     </div>
                     <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
-
-                    <div className="mt-3 bg-white p-4 inline-block rounded-lg">
-                      <iframe
-                        id="ytplayer"
-                        className=""
-                        type="text/html"
-                        width="auto"
-                        src={`https://www.youtube.com/embed/PG8DIp-MQ3M?autoplay=0&origin=http://example.com&controls=0&rel=1`}
-                        frameborder="0"
-                      ></iframe>
+                    <div className="">
+                      <Slider {...settingsVideo}>
+                        {listVideo.map((item, index) => {
+                          return (
+                            <div className="mx-20 px-1" key={index}>
+                              <div className="mt-3 bg-white p-4 inline-block rounded-lg ">
+                                <iframe
+                                  id="ytplayer"
+                                  className=""
+                                  type="text/html"
+                                  width="100%"
+                                  src={`https://www.youtube.com/embed/${item.link}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
+                                  frameborder="0"
+                                ></iframe>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </Slider>
                     </div>
                   </div>
                 </div>
@@ -454,6 +489,7 @@ export default function Home() {
             </div>
           </div>
           {/* Gallery dan Video */}
+
           {/* Rekomendasi */}
           <div className="my-10">
             <div className="mb-8">

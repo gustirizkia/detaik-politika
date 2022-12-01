@@ -13,6 +13,15 @@ export default function Navbar() {
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
+    console.log("disabled curren  eslint-disable-line"); // eslint-disable-line
+
+    // eslint-disable-next-line
+    console.log("disabled this one/ eslint-disable-next-line");
+
+    // eslint-disable-next-line
+    // eslint-disable-next-line react/jsx-no-bind
+    // eslint-disable-next-line
+    // eslint-disable-next-line
     handleFetchData();
   }, []);
 
@@ -25,7 +34,7 @@ export default function Navbar() {
       })
       .then((ress) => {
         setTempData(ress.data.data);
-        console.log(ress.data.data);
+        console.log("ada Data Kategori", ress.data.data);
       })
       .catch((err) => {
         console.log("Server Error", err);

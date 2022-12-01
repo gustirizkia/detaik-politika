@@ -11,6 +11,10 @@ const nextConfig = {
       "detakpolitika.himafhunpam.com",
     ],
   },
+
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = nextConfig;
