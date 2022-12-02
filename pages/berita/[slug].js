@@ -33,8 +33,6 @@ export async function getServerSideProps({ params: { slug } }) {
       };
     });
 
-  // console.log(data);
-
   if (!data) {
     return {
       notFound: true,

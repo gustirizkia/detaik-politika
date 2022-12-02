@@ -41,16 +41,18 @@ export default function Footer() {
       </div>
       <hr />
       <div className="my-10 md:px-32 px-4">
-        <div className="flex justify-end">
+        <div className="md:flex justify-end">
           {tempData.map((item, index) => {
             return (
               <>
-                <div className="font-bold">
+                <div className="font-bold my-2 md:my-0">
                   <Link href={`/footer/${item.nama_page}`}>
                     {item.nama_page}
                   </Link>
                 </div>
-                <span className="font-bold mx-1 md:mx-4">|</span>
+                <span className="font-bold mx-1 md:mx-4 md:block hidden">
+                  |
+                </span>
               </>
             );
           })}
