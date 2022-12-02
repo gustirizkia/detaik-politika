@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { APIURL, JwtToken, STORAGEURL } from "../../components/api/base_url";
 import Berita from "../../components/Home/Berita";
+import Footer from "../../components/Home/Footer";
 import Navbar from "../../components/navbar";
 import Navmobile from "../../components/Navmobile";
 
@@ -85,7 +86,7 @@ export default function CariPage() {
         </div>
       </div>
 
-      <div className="px-4 md:px-32 font-popins relative">
+      <div className="px-4 md:px-32 font-popins relative min-h-screen">
         <div className="md:hidden">
           <Navmobile />
         </div>
@@ -112,6 +113,10 @@ export default function CariPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="mt-32">
+        <Footer />
       </div>
     </>
   );
