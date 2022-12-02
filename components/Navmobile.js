@@ -141,7 +141,7 @@ export default function Navmobile() {
           // type: "loop",
           autoWidth: true,
         }}
-        className="pb-4 "
+        className="pb-4 mt-3"
       >
         <SplideSlide>
           <div className="inline-block font-bold font-popins hover:text-pink-500">
