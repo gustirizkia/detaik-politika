@@ -40,7 +40,7 @@ export default function Home() {
 
   useEffect(() => {
     handleBeritaUtama();
-  }, [limitBerita]);
+  }, []);
 
   useEffect(() => {
     handleBeritaTerbaru();
@@ -109,7 +109,6 @@ export default function Home() {
         },
       })
       .then((ress) => {
-        console.log("berita utama", ress.data);
         setBeritaUtama(ress.data.data.data);
         setLoadSkeleton(false);
       })
@@ -144,6 +143,8 @@ export default function Home() {
     setLoadSkeleton(true);
 
     let addLimit = limitBerita + 1;
+    setLimitBerita(addLimit);
+
     axios
       .get(APIURL + "artikel?page=" + addLimit, {
         headers: {
