@@ -217,6 +217,10 @@ export default function DetailArtikel({ single, dataReady }) {
               className="rounded-lg"
             />
 
+            <div className="text-gray-400 my-3 text-sm text-center">
+              {single.image_ref}
+            </div>
+
             <div className="mt-6">
               <div
                 dangerouslySetInnerHTML={{
