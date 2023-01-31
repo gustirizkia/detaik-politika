@@ -8,7 +8,7 @@ const nextConfig = {
       "via.placeholder.com",
       "admin.kuakmedia.co",
       "detakpolitika.kuakmedia.co",
-      "detakpolitika.himafhunpam.com",
+      "detakpolitika.m-andreansaefudin.com",
     ],
   },
 

@@ -1,4 +1,4 @@
-export const APIURL = "https://detakpolitika.himafhunpam.com/api/";
+export const APIURL = "https://detakpolitika.m-andreansaefudin.com/api/";
 export const JwtToken =
-  "kZxpj5yasfynGaJ7iRvEVmSfZkl5IhTPH6hWvWRpR6o0Ql4PDIJiYsyAAL2zMjRq";
-export const STORAGEURL = "https://detakpolitika.himafhunpam.com/";
+  "PAiizEELmBsrze8Qn5vHt5OwtCRbPYuI7l2Fv7AFa5iaOx09TkirXrapZu90YUqZ";
+export const STORAGEURL = "https://detakpolitika.m-andreansaefudin.com/";
