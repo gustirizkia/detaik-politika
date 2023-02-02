@@ -466,7 +466,7 @@ export default function Home() {
                       Video Terbaru
                     </div>
                     <div className="w-full h-1 mt-2 bg-pink-500 rounded-full block"></div>
-                    <div className="">
+                    <div className="w-full">
                       <Slider {...settingsVideo}>
                         {listVideo.map((item, index) => {
                           return (
