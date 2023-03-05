@@ -133,64 +133,67 @@ export default function Navmobile() {
         </div>
       </div>
       {!showInputSearch || tagSearchShow()}
-      <div className="pb-4 mt-3 px-4 flex overflow-x-scroll  ">
-        <div>
-          <div className="inline-block font-bold font-popins hover:text-pink-500">
-            <Link
-              href="/"
-              className={`${route.pathname === "/" ? "text-pink-500" : " "}`}
-            >
-              Home{" "}
-            </Link>
+      <div className="px-4">
+        <div className="pb-4 mt-3 flex overflow-x-scroll  scrollbar-hide">
+          <div>
+            <div className="inline-block font-bold font-popins hover:text-pink-500">
+              <Link
+                href="/"
+                className={`${route.pathname === "/" ? "text-pink-500" : " "}`}
+              >
+                Home{" "}
+              </Link>
+            </div>
           </div>
-        </div>
-        {tempData.map((item, index) => {
-          return (
-            <>
-              {item.sub_judul === null ? (
-                <div className=" ml-3 font-bold font-popins hover:text-pink-500 ">
-                  {item.sub.length > 0 ? (
-                    <>
-                      <Dropdown
-                        inline={true}
-                        label={
-                          <span
-                            className={
-                              q === "Internasional" || q === "Nasional"
-                                ? "text-pink-500"
-                                : ""
-                            }
-                          >
-                            {item.nama}
-                          </span>
-                        }
-                      >
-                        {item.sub.map((sub_item) => {
-                          return (
-                            <Dropdown.Item>
-                              <Link
-                                className=""
-                                href={`/kategori?q=${sub_item.nama}`}
-                              >
-                                {sub_item.nama}
-                              </Link>
-                            </Dropdown.Item>
-                          );
-                        })}
-                      </Dropdown>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        href={`/kategori?q=${item.nama}`}
-                        className={`${q === item.nama ? "text-pink-500" : " "}`}
-                      >
-                        {item.nama}
-                      </Link>
-                    </>
-                  )}
+          {tempData.map((item, index) => {
+            return (
+              <>
+                {item.sub_judul === null ? (
+                  <div className=" ml-3 font-bold font-popins hover:text-pink-500 ">
+                    {item.sub.length > 0 ? (
+                      <>
+                        <Dropdown
+                          inline={true}
+                          label={
+                            <span
+                              className={
+                                q === "Internasional" || q === "Nasional"
+                                  ? "text-pink-500"
+                                  : ""
+                              }
+                            >
+                              {item.nama}
+                            </span>
+                          }
+                        >
+                          {item.sub.map((sub_item) => {
+                            return (
+                              <Dropdown.Item>
+                                <Link
+                                  className=""
+                                  href={`/kategori?q=${sub_item.nama}`}
+                                >
+                                  {sub_item.nama}
+                                </Link>
+                              </Dropdown.Item>
+                            );
+                          })}
+                        </Dropdown>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          href={`/kategori?q=${item.nama}`}
+                          className={`${
+                            q === item.nama ? "text-pink-500" : " "
+                          }`}
+                        >
+                          {item.nama}
+                        </Link>
+                      </>
+                    )}
 
-                  {/* {item.sub.length < 1 || (
+                    {/* {item.sub.length < 1 || (
                       <div className="hidden group-hover:block absolute font-medium bg-pink-500 pb-4 rounded-b-lg  left-1/2 transform -translate-x-1/2 p-4">
                         {item.sub.map((item, index) => {
                           return (
@@ -205,13 +208,14 @@ export default function Navmobile() {
                         })}
                       </div>
                     )} */}
-                </div>
-              ) : (
-                <></>
-              )}
-            </>
-          );
-        })}
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </>
+            );
+          })}
+        </div>
       </div>
     </>
   );

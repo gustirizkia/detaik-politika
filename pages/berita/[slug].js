@@ -212,7 +212,7 @@ export default function DetailArtikel({ single, dataReady }) {
         <div className="grid grid-flow-row grid-cols-12 gap-8">
           <div className="col-span-12 md:col-span-8 relative ">
             <div className="=">
-              <div className="text-base md:text-3xl font-semibold text-gray-800">
+              <div className="text-xl md:text-3xl font-semibold text-gray-800">
                 {single.judul}
               </div>
 

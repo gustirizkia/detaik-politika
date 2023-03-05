@@ -32,9 +32,11 @@ export default function Berita({
             </div>
           </div>
           <div className="col-span-7 my-auto">
-            <div className="text-gray-400 text-sm mb-2">{created_at}</div>
+            <div className="text-gray-400 text-sm mb-2 md:mt-0 mt-2">
+              {created_at}
+            </div>
             <div className="text-gray-800 font-semibold text-xl group-hover:text-pink-500 ">
-              {title}
+              <Link href={linkBerita}>{title}</Link>
             </div>
             <div className="text-pink-500 text-sm mt-2 font-medium">
               {kategori}

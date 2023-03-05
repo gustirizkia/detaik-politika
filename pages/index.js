@@ -21,6 +21,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ScrollTop from "../components/ScrollTop";
+import { Carousel } from "flowbite-react";
 
 export default function Home() {
   const [BeritaTerbaru, setBeritaTerbaru] = useState([]);
@@ -270,45 +271,53 @@ export default function Home() {
         <Navmobile />
       </div>
       <div className="px-4 md:px-32 font-popins relative">
-        <div className="mt-6 md:mt-10">
+        <div className="mt-2 md:mt-10">
           <div className="md:grid grid-flow-row grid-cols-12 gap-10">
             <div className="col-span-12 md:col-span-8 relative rounded-xl md:overflow-hidden">
               <div className=" md:block">
-                <Slider {...settings}>
-                  {BeritaTerbaru.map((item, index) => {
-                    return (
-                      <Link href={"/berita/" + item.slug}>
-                        <div key={index}>
-                          <div className="md:h-96 h-40">
-                            <Image
-                              src={`${STORAGEURL}${item.image}`}
-                              width="1000"
-                              height="1000"
-                              alt="Detak Politika"
-                              className="object-cover object-center"
-                            />
+                <div className="h-64 sm:h-64 xl:h-80 2xl:h-96">
+                  <Carousel
+                    leftControl={false}
+                    rightControl={false}
+                    control={false}
+                  >
+                    {BeritaTerbaru.map((item, index) => {
+                      return (
+                        <Link href={"/berita/" + item.slug}>
+                          <div key={index}>
+                            <div className="h-64 sm:h-64 xl:h-80 2xl:h-96">
+                              <Image
+                                src={`${STORAGEURL}${item.image}`}
+                                width="1000"
+                                height="1000"
+                                alt="Detak Politika"
+                                className="object-cover object-center h-64 sm:h-64 xl:h-80 2xl:h-96"
+                              />
+                            </div>
+                            <div className="bg-gray-900 md:absolute md:bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl md:block hidden">
+                              <div className="md:text-xl text-sm ">
+                                {item.judul}
+                              </div>
+                              <div className="text-pink-500">
+                                {item.kategori.nama}
+                              </div>
+                            </div>
+                            <div className="bg-gray-900 relative px-4 py-4 z-10 md:hidden -mt-16">
+                              <div className="md:text-xl text-sm  text-white">
+                                {item.judul.length >= 40
+                                  ? item.judul.substring(0, 34) + "..."
+                                  : item.judul}
+                              </div>
+                              <div className="text-pink-500">
+                                {item.kategori.nama}
+                              </div>
+                            </div>
                           </div>
-                          <div className="bg-gray-900 md:absolute md:bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl md:block hidden">
-                            <div className="md:text-xl text-sm ">
-                              {item.judul}
-                            </div>
-                            <div className="text-pink-500">
-                              {item.kategori.nama}
-                            </div>
-                          </div>
-                          <div className="bg-gray-900 relative px-4 py-4 z-10 md:hidden">
-                            <div className="md:text-xl text-sm  text-white">
-                              {item.judul}
-                            </div>
-                            <div className="text-pink-500">
-                              {item.kategori.nama}
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </Slider>
+                        </Link>
+                      );
+                    })}
+                  </Carousel>
+                </div>
               </div>
             </div>
             <div className="col-span-12 md:col-span-4 mt-8 md:mt-0">
@@ -587,10 +596,16 @@ export default function Home() {
                           />
                         </div>
                         <div className="md:text-lg text-sm font-medium md:font-bold  mt-4  ">
-                          {/* {item.judul} */}
-                          {item.judul.length >= 40
-                            ? item.judul.substring(0, 34) + "..."
-                            : item.judul}
+                          <span className="md:block hidden">
+                            {item.judul.length >= 70
+                              ? item.judul.substring(0, 74) + "..."
+                              : item.judul}
+                          </span>
+                          <span className="md:hidden">
+                            {item.judul.length >= 40
+                              ? item.judul.substring(0, 34) + "..."
+                              : item.judul}
+                          </span>
                         </div>
                       </Link>
                     </div>

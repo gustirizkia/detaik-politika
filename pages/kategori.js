@@ -7,6 +7,7 @@ import Footer from "../components/Home/Footer";
 import Terbaru from "../components/Home/Terbaru";
 import Navbar from "../components/navbar";
 import Navmobile from "../components/Navmobile";
+import ScrollTop from "../components/ScrollTop";
 import LogoFull from "../public/logoFull.jpg";
 
 export async function getServerSideProps({ query: q }) {
@@ -116,7 +117,7 @@ export default function Kategori({ datas, kategori, parent_kategori }) {
       <div className="px-4 md:px-32 font-popins relative md:mt-10">
         <div className="grid grid-flow-row grid-cols-12 gap-8">
           <div className=" md:col-span-8 col-span-12">
-            <div className="md:font-bold font-semibold md:text-xl mb-10">
+            <div className="md:font-bold font-semibold md:text-xl mb-4 md:mb-10">
               Kategori {">"}{" "}
               {parent_kategori !== 1 ? parent_kategori + " > " : ""} {kategori}
               <hr className="mt-4" />
