@@ -6,6 +6,7 @@ import Berita from "../../components/Home/Berita";
 import Footer from "../../components/Home/Footer";
 import Navbar from "../../components/navbar";
 import Navmobile from "../../components/Navmobile";
+import ScrollTop from "../../components/ScrollTop";
 
 export default function CariPage() {
   const router = useRouter();
@@ -85,12 +86,12 @@ export default function CariPage() {
           <Navbar />
         </div>
       </div>
+      <ScrollTop />
 
+      <div className="md:hidden">
+        <Navmobile />
+      </div>
       <div className="px-4 md:px-32 font-popins relative min-h-screen">
-        <div className="md:hidden">
-          <Navmobile />
-        </div>
-
         <div className="my-10">
           <div className="md:grid grid-flow-row grid-cols-2 md:grid-cols-12 gap-10">
             <div className="col-span-12 md:col-span-8">

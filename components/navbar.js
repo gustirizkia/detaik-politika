@@ -5,9 +5,11 @@ import logo from "../public/logo.png";
 import axios from "axios";
 import { APIURL, JwtToken } from "./api/base_url";
 import { useRouter } from "next/router";
+import { Dropdown } from "flowbite-react";
 
 export default function Navbar() {
   const route = useRouter();
+  const { q } = route.query;
 
   const [tempData, setTempData] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -66,16 +68,62 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="item flex justify-end ">
-          <div className="md:ml-8 ml-3 font-bold font-popins hover:text-pink-500">
-            <Link href="/">Home</Link>
+          <div
+            className={`"md:ml-8 ml-3 font-bold font-popins hover:text-pink-500 " `}
+          >
+            <Link
+              href="/"
+              className={`${route.pathname === "/" ? "text-pink-500" : " "}`}
+            >
+              Home
+            </Link>
           </div>
           {tempData.map((item, index) => {
             return (
               <div key={index}>
                 {item.sub_judul === null ? (
                   <div className="md:ml-8 group ml-3 font-bold font-popins hover:text-pink-500 relative">
-                    <Link href={`/kategori?q=${item.nama}`}>{item.nama}</Link>
-                    {item.sub.length < 1 || (
+                    {item.sub.length > 0 ? (
+                      <>
+                        <Dropdown
+                          inline={true}
+                          label={
+                            <span
+                              className={
+                                q === "Internasional" || q === "Nasional"
+                                  ? "text-pink-500"
+                                  : ""
+                              }
+                            >
+                              {item.nama}
+                            </span>
+                          }
+                        >
+                          {item.sub.map((sub_item) => {
+                            return (
+                              <Dropdown.Item>
+                                <Link href={`/kategori?q=${sub_item.nama}`}>
+                                  {sub_item.nama}
+                                </Link>
+                              </Dropdown.Item>
+                            );
+                          })}
+                        </Dropdown>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          href={`/kategori?q=${item.nama}`}
+                          className={`${
+                            q === item.nama ? "text-pink-500" : " "
+                          }`}
+                        >
+                          {item.nama}
+                        </Link>
+                      </>
+                    )}
+
+                    {/* {item.sub.length < 1 || (
                       <div className="hidden group-hover:block absolute font-medium bg-pink-500 pb-4 rounded-b-lg  left-1/2 transform -translate-x-1/2 p-4">
                         {item.sub.map((item, index) => {
                           return (
@@ -89,7 +137,7 @@ export default function Navbar() {
                           );
                         })}
                       </div>
-                    )}
+                    )} */}
                   </div>
                 ) : (
                   <></>
@@ -118,7 +166,7 @@ export default function Navbar() {
 
           <input
             type="text"
-            className="w-full focus:outline-none focus:ring-0 "
+            className="w-full focus:outline-none focus:ring-0 border-0 py-0 px-0"
             placeholder="Cari berita . . ."
             onChange={(e) => {
               setKeyword(e.target.value);

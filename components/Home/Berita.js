@@ -14,7 +14,7 @@ export default function Berita({
   return (
     <>
       {/* Berita utama */}
-      <Link href={linkBerita} className="group">
+      <div className="group">
         <div
           className={`md:grid grid-flow-row grid-cols-12 mb-8 gap-4 md:gap-10`}
         >
@@ -39,12 +39,15 @@ export default function Berita({
             <div className="text-pink-500 text-sm mt-2 font-medium">
               {kategori}
             </div>
-            <div className="bg-gray-800 text-white px-2 py-1  inline-block rounded-lg text-xs mt-2 ">
+            <Link
+              href={linkBerita}
+              className="bg-gray-800 text-white px-2 py-1  inline-block rounded-lg text-xs mt-2 "
+            >
               Baca Selengkapnya
-            </div>
+            </Link>
           </div>
         </div>
-      </Link>
+      </div>
       {/* end Berita utama */}
     </>
   );

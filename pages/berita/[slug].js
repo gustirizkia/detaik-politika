@@ -12,6 +12,7 @@ import Fb from "../../public/images/logos_facebook.png";
 import Link from "next/link";
 import Footer from "../../components/Home/Footer";
 import Head from "next/head";
+import ScrollTop from "../../components/ScrollTop";
 
 export async function getServerSideProps({ params: { slug } }) {
   let data;
@@ -126,16 +127,27 @@ export default function DetailArtikel({ single, dataReady }) {
           <div className="flex items-center">
             <div className="mx-4">
               <Link
+                target="_blank"
                 href={`whatsapp://send?text=https://${hostUrl}/berita/${single.slug}`}
               >
                 <Image alt="Detakpolitika " src={Wa} width={24} height={30} />
               </Link>
             </div>
             <div className="mx-4">
-              <Image alt="Detakpolitika " src={Tw} width={24} height={30} />
+              <Link
+                target="_blank"
+                href={`https://twitter.com/intent/tweet/?text=https://${hostUrl}/berita/${single.slug}`}
+              >
+                <Image alt="Detakpolitika " src={Tw} width={24} height={30} />
+              </Link>
             </div>
             <div className="mx-4">
-              <Image alt="Detakpolitika " src={Fb} width={24} height={30} />
+              <Link
+                target="_blank"
+                href={`https://www.facebook.com/sharer/sharer.php?u=https://${hostUrl}/berita/${single.slug}`}
+              >
+                <Image alt="Detakpolitika " src={Fb} width={24} height={30} />
+              </Link>
             </div>
           </div>
         </div>
@@ -147,7 +159,7 @@ export default function DetailArtikel({ single, dataReady }) {
     <>
       <Head>
         <title>{single.judul}</title>
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/logoFull.jpg" />
         <meta
           property="og:site_name"
           content={`Detakpolitika | ${single.judul}`}
@@ -173,6 +185,7 @@ export default function DetailArtikel({ single, dataReady }) {
           content={STORAGEURL + single.image}
         />
       </Head>
+      <ScrollTop />
       <span itemprop="image" itemscope itemtype="image/jpeg">
         <link itemprop="url" href={STORAGEURL + single.image} />
       </span>
@@ -182,22 +195,24 @@ export default function DetailArtikel({ single, dataReady }) {
         </div>
       </div>
 
+      <div className="md:hidden sticky z-20 top-0 bg-white">
+        <Navmobile />
+      </div>
       <div className="px-4 md:px-32 font-popins relative  ">
-        <div className="md:hidden sticky z-20 top-0 bg-white">
-          <Navmobile />
-        </div>
-
         {!dataReady || tagSkeleton()}
 
         <div className="my-4">
           <span>
-            Home {">"} {single.kategori.nama}
+            <Link href={"/"}>Home</Link> {">"}{" "}
+            <Link href={"/kategori?q=" + single.kategori.nama}>
+              {single.kategori.nama}
+            </Link>
           </span>
         </div>
         <div className="grid grid-flow-row grid-cols-12 gap-8">
           <div className="col-span-12 md:col-span-8 relative ">
             <div className="=">
-              <div className=" text-3xl font-semibold text-gray-800">
+              <div className="text-base md:text-3xl font-semibold text-gray-800">
                 {single.judul}
               </div>
 

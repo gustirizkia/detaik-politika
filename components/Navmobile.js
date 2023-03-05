@@ -7,6 +7,7 @@ import { Splide, SplideSlide } from "splide-nextjs/react-splide";
 import "splide-nextjs/splide/dist/css/themes/splide-default.min.css";
 import logo from "../public/logo.png";
 import { APIURL, JwtToken } from "./api/base_url";
+import { Dropdown } from "flowbite-react";
 
 export default function Navmobile() {
   const [showInputSearch, setInputShow] = useState(false);
@@ -16,6 +17,7 @@ export default function Navmobile() {
 
   const textInput = useRef(null);
   const route = useRouter();
+  const { q } = route.query;
 
   useEffect(() => {
     handleFetchData();
@@ -104,9 +106,9 @@ export default function Navmobile() {
 
   return (
     <>
-      <div className="flex justify-between items-center relative">
+      <div className="flex justify-between items-center relative px-4">
         <div
-          className="w-52 
+          className="w-60 
           "
         >
           <Link href="/">
@@ -120,7 +122,7 @@ export default function Navmobile() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="text-gray-500 w-10 h-10 mr-2"
+            className="text-gray-500 w-10 h-10 "
           >
             <path
               strokeLinecap="round"
@@ -131,74 +133,86 @@ export default function Navmobile() {
         </div>
       </div>
       {!showInputSearch || tagSearchShow()}
-      <Splide
-        hasTrack={false}
-        options={{
-          gap: "16px",
-          drag: "free",
-          pagination: false,
-          arrows: false,
-          // type: "loop",
-          autoWidth: true,
-        }}
-        className="pb-4 mt-3"
-      >
-        <SplideSlide>
+      <div className="pb-4 mt-3 px-4 flex overflow-x-scroll  ">
+        <div>
           <div className="inline-block font-bold font-popins hover:text-pink-500">
-            <Link href="/">Home </Link>
+            <Link
+              href="/"
+              className={`${route.pathname === "/" ? "text-pink-500" : " "}`}
+            >
+              Home{" "}
+            </Link>
           </div>
-        </SplideSlide>
+        </div>
         {tempData.map((item, index) => {
           return (
             <>
               {item.sub_judul === null ? (
-                <SplideSlide key={item.id}>
-                  <div className="inline-block  font-bold font-popins hover:text-pink-500">
-                    {item.sub.length > 0 ? (
-                      <div className="group relative">
-                        <div
-                          onClick={() => {
-                            if (idActiveDropdown === item.id) {
-                              setIdActiveDrop(0);
-                            } else {
-                              setIdActiveDrop(item.id);
+                <div className=" ml-3 font-bold font-popins hover:text-pink-500 ">
+                  {item.sub.length > 0 ? (
+                    <>
+                      <Dropdown
+                        inline={true}
+                        label={
+                          <span
+                            className={
+                              q === "Internasional" || q === "Nasional"
+                                ? "text-pink-500"
+                                : ""
                             }
-                          }}
-                        >
-                          {item.nama}
-                        </div>
-                        {idActiveDropdown === item.id ? (
-                          <div className="relative">
-                            <div className=" text-white block relative font-medium bg-pink-500 pb-4 rounded-b-lg  left-1/2 transform -translate-x-1/2 p-4">
-                              {item.sub.map((item, index) => {
-                                return (
-                                  <div key={index}>
-                                    <Link href={`/kategori?q=${item.nama}`}>
-                                      <div className="  cursor-pointer hover:text-pink-200 mb-1 text-white underline">
-                                        {item.nama}
-                                      </div>
-                                    </Link>
-                                  </div>
-                                );
-                              })}
+                          >
+                            {item.nama}
+                          </span>
+                        }
+                      >
+                        {item.sub.map((sub_item) => {
+                          return (
+                            <Dropdown.Item>
+                              <Link
+                                className=""
+                                href={`/kategori?q=${sub_item.nama}`}
+                              >
+                                {sub_item.nama}
+                              </Link>
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </Dropdown>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href={`/kategori?q=${item.nama}`}
+                        className={`${q === item.nama ? "text-pink-500" : " "}`}
+                      >
+                        {item.nama}
+                      </Link>
+                    </>
+                  )}
+
+                  {/* {item.sub.length < 1 || (
+                      <div className="hidden group-hover:block absolute font-medium bg-pink-500 pb-4 rounded-b-lg  left-1/2 transform -translate-x-1/2 p-4">
+                        {item.sub.map((item, index) => {
+                          return (
+                            <div key={index}>
+                              <Link href={`/kategori?q=${item.nama}`}>
+                                <div className="  cursor-pointer hover:text-pink-200 mb-1 text-white underline">
+                                  {item.nama}
+                                </div>
+                              </Link>
                             </div>
-                          </div>
-                        ) : (
-                          <></>
-                        )}
+                          );
+                        })}
                       </div>
-                    ) : (
-                      <Link href={`/kategori?q=${item.nama}`}>{item.nama}</Link>
-                    )}
-                  </div>
-                </SplideSlide>
+                    )} */}
+                </div>
               ) : (
                 <></>
               )}
             </>
           );
         })}
-      </Splide>
+      </div>
     </>
   );
 }

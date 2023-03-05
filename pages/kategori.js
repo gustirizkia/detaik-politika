@@ -1,4 +1,5 @@
 import axios from "axios";
+import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { APIURL, JwtToken, STORAGEURL } from "../components/api/base_url";
 import Berita from "../components/Home/Berita";
@@ -6,6 +7,7 @@ import Footer from "../components/Home/Footer";
 import Terbaru from "../components/Home/Terbaru";
 import Navbar from "../components/navbar";
 import Navmobile from "../components/Navmobile";
+import LogoFull from "../public/logoFull.jpg";
 
 export async function getServerSideProps({ query: q }) {
   let data;
@@ -28,12 +30,6 @@ export async function getServerSideProps({ query: q }) {
     .catch((error) => {
       if (error.response) {
         // Request made and server responded
-        console.log("response data", error.response.data);
-        console.log("response status", error.response.status);
-        console.log("response header", error.response.headers);
-        console.log("Params nama", q.q);
-        console.log("Params nama", q.q);
-        console.log("Params nama", q.q);
       } else if (error.request) {
         // The request was made but no response was received
         console.log(error.request);
@@ -64,10 +60,6 @@ export async function getServerSideProps({ query: q }) {
 export default function Kategori({ datas, kategori, parent_kategori }) {
   const [BeritaTerbaru, setBeritaTerbaru] = useState([]);
 
-  useEffect(() => {
-    console.log("datas", datas);
-  }, []);
-
   const handleBeritaTerbaru = () => {
     axios
       .get(APIURL + "artikel/terbaru?", {
@@ -87,21 +79,46 @@ export default function Kategori({ datas, kategori, parent_kategori }) {
 
   return (
     <>
+      <Head>
+        <title>
+          Detak Politika |{" "}
+          {parent_kategori !== 1 ? parent_kategori + " | " : ""} {kategori}
+        </title>
+        <link rel="icon" href="/logoFull.jpg" />
+        <meta
+          name="keywords"
+          content="berita hari ini, berita harian, berita terkini, berita terbaru, berita indonesia, berita terpopuler, berita, info terkini, berita dunia, peristiwa hari ini"
+        ></meta>
+        <meta property="og:title" content="DETAK POLITIKA | Melangkah Maju" />
+        <meta
+          name="description"
+          content="detakpolitik.com - Kabar terbaru hari ini Indonesia dan Dunia, Kabar terkini news, peristiwa, ekonomi, hukum"
+        ></meta>
+        <meta property="og:image" content={LogoFull.src} />
+        <meta
+          property="og:description"
+          content="detakpolitik.com - Kabar terbaru hari ini Indonesia dan Dunia, Kabar terkini news, peristiwa, ekonomi, hukum"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:image:width" content="300" />
+        <meta property="og:image:height" content="300" />
+      </Head>
+      <ScrollTop />
       <div className="md:block hidden sticky bg-white  z-20 top-0 border-b">
         <div className="md:px-32 font-popins">
           <Navbar />
         </div>
       </div>
 
+      <div className="md:hidden mb-2  sticky z-20 top-0 bg-white">
+        <Navmobile />
+      </div>
       <div className="px-4 md:px-32 font-popins relative md:mt-10">
-        <div className="md:hidden mb-8  sticky z-20 top-0 bg-white">
-          <Navmobile />
-        </div>
         <div className="grid grid-flow-row grid-cols-12 gap-8">
           <div className=" md:col-span-8 col-span-12">
-            <div className="font-bold text-xl mb-10">
+            <div className="md:font-bold font-semibold md:text-xl mb-10">
               Kategori {">"}{" "}
-              {parent_kategori !== 1 ? parent_kategori + " | " : ""} {kategori}
+              {parent_kategori !== 1 ? parent_kategori + " > " : ""} {kategori}
               <hr className="mt-4" />
             </div>
             {datas.map((item, index) => {

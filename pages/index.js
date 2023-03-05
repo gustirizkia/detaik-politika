@@ -20,6 +20,7 @@ import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ScrollTop from "../components/ScrollTop";
 
 export default function Home() {
   const [BeritaTerbaru, setBeritaTerbaru] = useState([]);
@@ -152,9 +153,6 @@ export default function Home() {
         },
       })
       .then((ress) => {
-        // console.log("Handle load more runn");
-        // console.log(ress.data.data.current_page >= ress.data.data.last_page);
-
         ress.data.data.data.forEach((element) => {
           setBeritaUtama((BeritaUtama) => [...BeritaUtama, element]);
         });
@@ -262,17 +260,16 @@ export default function Home() {
         <meta property="og:image:width" content="300" />
         <meta property="og:image:height" content="300" />
       </Head>
-
+      <ScrollTop />
       <div className="md:block hidden sticky bg-white  z-20 top-0 border-b">
         <div className="md:px-32 font-popins">
           <Navbar />
         </div>
       </div>
+      <div className="md:hidden sticky z-20 top-0 bg-white">
+        <Navmobile />
+      </div>
       <div className="px-4 md:px-32 font-popins relative">
-        <div className="md:hidden sticky z-20 top-0 bg-white">
-          <Navmobile />
-        </div>
-
         <div className="mt-6 md:mt-10">
           <div className="md:grid grid-flow-row grid-cols-12 gap-10">
             <div className="col-span-12 md:col-span-8 relative rounded-xl md:overflow-hidden">
@@ -292,7 +289,7 @@ export default function Home() {
                             />
                           </div>
                           <div className="bg-gray-900 md:absolute md:bottom-0 px-4 py-4 text-white font-popins w-full rounded-b-xl md:block hidden">
-                            <div className="md:text-xl text-sm underline">
+                            <div className="md:text-xl text-sm ">
                               {item.judul}
                             </div>
                             <div className="text-pink-500">
@@ -300,7 +297,7 @@ export default function Home() {
                             </div>
                           </div>
                           <div className="bg-gray-900 relative px-4 py-4 z-10 md:hidden">
-                            <div className="md:text-xl text-sm underline text-white">
+                            <div className="md:text-xl text-sm  text-white">
                               {item.judul}
                             </div>
                             <div className="text-pink-500">
@@ -322,7 +319,7 @@ export default function Home() {
                   <div key={index}>
                     <Link href={`/berita/${item.slug}`}>
                       <div className="mt-4 flex justify-start items-center">
-                        <div className="text-pink-500 font-bold text-4xl underline italic mr-5 leading-none">
+                        <div className="text-pink-500 font-bold text-4xl  italic mr-5 leading-none">
                           {index + 1}
                         </div>
                         <div className="my-auto">
@@ -428,7 +425,7 @@ export default function Home() {
                             height={400}
                             className="rounded-lg"
                           />
-                          <div className="md:font-semibold font-medium mt-3 underline">
+                          <div className="md:font-semibold font-medium mt-3 ">
                             {item.nama}
                           </div>
                         </div>
@@ -514,7 +511,7 @@ export default function Home() {
                         alt={BeritaRekomendasi[0].judul}
                       />
                       <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full">
-                        <div className="text-xl underline">
+                        <div className="text-xl ">
                           {BeritaRekomendasi[0].judul}
                         </div>
                         <div className="text-pink-500">
@@ -589,9 +586,11 @@ export default function Home() {
                             className="rounded-xl"
                           />
                         </div>
-                        <div className="md:text-lg font-medium md:font-bold underline mt-4  ">
+                        <div className="md:text-lg text-sm font-medium md:font-bold  mt-4  ">
                           {/* {item.judul} */}
-                          {item.judul}
+                          {item.judul.length >= 40
+                            ? item.judul.substring(0, 34) + "..."
+                            : item.judul}
                         </div>
                       </Link>
                     </div>

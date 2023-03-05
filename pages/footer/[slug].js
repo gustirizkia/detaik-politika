@@ -5,6 +5,7 @@ import { APIURL, JwtToken } from "../../components/api/base_url";
 import Footer from "../../components/Home/Footer";
 import Navbar from "../../components/navbar";
 import Navmobile from "../../components/Navmobile";
+import ScrollTop from "../../components/ScrollTop";
 import LogoFull from "../../public/logoFull.jpg";
 
 export async function getServerSideProps({ params: { slug } }) {
@@ -64,16 +65,18 @@ export default function footerDinamis({ dataSlug, single }) {
         <meta property="og:image:height" content="300" />
       </Head>
 
+      <ScrollTop />
+
       <div className="md:block hidden sticky bg-white  z-20 top-0 border-b">
         <div className="md:px-32 font-popins">
           <Navbar />
         </div>
       </div>
 
+      <div className="md:hidden">
+        <Navmobile />
+      </div>
       <div className="md:px-32 px-6 min-h-screen">
-        <div className="md:hidden">
-          <Navmobile />
-        </div>
         <div className="text-2xl my-4 font-bold">{dataSlug}</div>
         <div className="mt-6">
           <div
