@@ -283,7 +283,7 @@ export default function Home() {
                   >
                     {BeritaTerbaru.map((item, index) => {
                       return (
-                        <Link href={"/berita/" + item.slug}>
+                        <Link href={"/berita/" + item.slug} key={index}>
                           <div key={index}>
                             <div className="h-64 sm:h-64 xl:h-80 2xl:h-96">
                               <Image
@@ -428,12 +428,15 @@ export default function Home() {
                     {GalleryData.map((item, index) => {
                       return (
                         <div className="col-span-12 md:col-span-6" key={index}>
-                          <Image
-                            src={`${STORAGEURL}${item.image}`}
-                            width={600}
-                            height={400}
-                            className="rounded-lg"
-                          />
+                          <div className="md:h-44 w-full rounded-xl">
+                            <Image
+                              src={`${STORAGEURL}${item.image}`}
+                              width="1000"
+                              height="1000"
+                              alt="Detak Politika"
+                              className="object-cover object-center md:h-44 w-full rounded-xl"
+                            />
+                          </div>
                           <div className="md:font-semibold font-medium mt-3 ">
                             {item.nama}
                           </div>
@@ -461,7 +464,9 @@ export default function Home() {
 
                     <div className="col-span-12 md:col-span-6 flex items-center">
                       <div className="font-semibold">
-                        {videoPertama.nama}
+                        <Link href={`video/${videoPertama.id}`}>
+                          {videoPertama.nama}
+                        </Link>
                         {/* <div className="text-pink-500">Politik</div> */}
                       </div>
                     </div>
@@ -476,7 +481,11 @@ export default function Home() {
                       <Slider {...settingsVideo}>
                         {listVideo.map((item, index) => {
                           return (
-                            <div className="mx-20 px-1" key={index}>
+                            <Link
+                              href={`/video/${item.id}`}
+                              className="mx-20 px-1"
+                              key={index}
+                            >
                               <div className="mt-3 bg-white p-4 inline-block rounded-lg ">
                                 <iframe
                                   id="ytplayer"
@@ -487,7 +496,7 @@ export default function Home() {
                                   frameborder="0"
                                 ></iframe>
                               </div>
-                            </div>
+                            </Link>
                           );
                         })}
                       </Slider>
@@ -517,7 +526,7 @@ export default function Home() {
                         layout="responsive"
                         width={300}
                         height={300}
-                        alt={BeritaRekomendasi[0].judul}
+                        alt={"Image " + BeritaRekomendasi[0].judul}
                       />
                       <div className="bg-gray-900 md:absolute bottom-0 px-4 py-4 text-white font-popins w-full">
                         <div className="text-xl ">
@@ -536,7 +545,7 @@ export default function Home() {
               <div className="col-span-12 md:col-span-4">
                 {BeritaRekomendasi.slice(0, 3).map((item) => {
                   return (
-                    <>
+                    <div key={item.id}>
                       {BeritaRekomendasi[0].id !== item.id ? (
                         <>
                           <Link href={"/berita/" + item.slug}>
@@ -564,7 +573,7 @@ export default function Home() {
                       ) : (
                         <></>
                       )}
-                    </>
+                    </div>
                   );
                 })}
               </div>

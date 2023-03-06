@@ -36,7 +36,6 @@ export default function Navbar() {
       })
       .then((ress) => {
         setTempData(ress.data.data);
-        console.log("ada Data Kategori", ress.data.data);
       })
       .catch((err) => {
         console.log("Server Error", err);

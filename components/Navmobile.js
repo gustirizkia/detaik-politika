@@ -32,7 +32,6 @@ export default function Navmobile() {
       })
       .then((ress) => {
         setTempData(ress.data.data);
-        console.log("Data Kategori", ress.data.data[0].length);
       })
       .catch((err) => {
         console.log("Server Error", err);
