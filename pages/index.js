@@ -428,17 +428,19 @@ export default function Home() {
                     {GalleryData.map((item, index) => {
                       return (
                         <div className="col-span-12 md:col-span-6" key={index}>
-                          <div className="md:h-44 w-full rounded-xl">
-                            <Image
-                              src={`${STORAGEURL}${item.image}`}
-                              width="1000"
-                              height="1000"
-                              alt="Detak Politika"
-                              className="object-cover object-center md:h-44 w-full rounded-xl"
-                            />
-                          </div>
+                          <Link href={`gallery/${item.id}`}>
+                            <div className="md:h-44 w-full rounded-xl">
+                              <Image
+                                src={`${STORAGEURL}${item.image}`}
+                                width="1000"
+                                height="1000"
+                                alt="Detak Politika"
+                                className="object-cover object-center md:h-44 w-full rounded-xl"
+                              />
+                            </div>
+                          </Link>
                           <div className="md:font-semibold font-medium mt-3 ">
-                            {item.nama}
+                            <Link href={`gallery/${item.id}`}>{item.nama}</Link>
                           </div>
                         </div>
                       );
